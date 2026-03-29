@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パワアド パーティ診断</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e14;
+    --surface: #16161f;
+    --surface2: #1e1e2c;
+    --border: #2e2e45;
+    --gold: #d4a843;
+    --gold-light: #f0c96a;
+    --gold-dim: #8a6a20;
+    --text: #e8e4d8;
+    --text-dim: #8a8676;
+    --red: #c94040;
+    --blue: #4a90c4;
+    --green: #5ba85a;
+    --wind: #5bc4a0;
+    --fire: #c46030;
+    --water: #4a8ec4;
+    --rank-s: #f0c030;
+    --rank-a: #c0c0d0;
+    --rank-b: #a06030;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 背景テクスチャ */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,168,67,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(74,144,196,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ヘッダー */
+  header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .logo-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 800;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(212,168,67,0.4);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  header p {
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* セクションタイトル */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-title h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* フィルター */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    font-size: 12px;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--gold-dim);
+    color: var(--gold-light);
+    background: rgba(212,168,67,0.08);
+  }
+
+  .filter-btn.fire.active { border-color: var(--fire); color: var(--fire); background: rgba(196,96,48,0.1); }
+  .filter-btn.water.active { border-color: var(--water); color: var(--water); background: rgba(74,142,196,0.1); }
+  .filter-btn.wind.active { border-color: var(--wind); color: var(--wind); background: rgba(91,196,160,0.1); }
+
+  /* キャラグリッド */
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .char-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    text-align: center;
+    user-select: none;
+  }
+
+  .char-card:hover {
+    border-color: var(--gold-dim);
+    transform: translateY(-2px);
+  }
+
+  .char-card.selected {
+    border-color: var(--gold);
+    background: rgba(212,168,67,0.08);
+    box-shadow: 0 0 16px rgba(212,168,67,0.15);
+  }
+
+  .char-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .char-rank {
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+  }
+  .rank-ss { color: #ff80d0; text-shadow: 0 0 8px rgba(255,128,208,0.5); }
+  .rank-s { color: var(--rank-s); }
+  .rank-a { color: var(--rank-a); }
+  .rank-b { color: var(--rank-b); }
+
+  .char-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+  }
+
+  .char-card.selected .char-icon {
+    border-color: var(--gold-dim);
+  }
+
+  .char-name {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .char-tags {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .tag-fire { background: rgba(196,96,48,0.2); color: #e07040; }
+  .tag-water { background: rgba(74,142,196,0.2); color: #60a0d8; }
+  .tag-wind { background: rgba(91,196,160,0.2); color: #60d0a8; }
+  .tag-job { background: rgba(255,255,255,0.07); color: var(--text-dim); }
+
+  /* 選択カウント */
+  .select-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .select-count {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .select-count span {
+    color: var(--gold-light);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .clear-btn {
+    font-size: 12px;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.2s;
+  }
+  .clear-btn:hover { color: var(--text); }
+
+  /* 診断ボタン */
+  .diagnose-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #a07820, var(--gold), #c09030);
+    border: none;
+    border-radius: 12px;
+    color: #1a1200;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(212,168,67,0.25);
+    margin-bottom: 48px;
+  }
+
+  .diagnose-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(212,168,67,0.35);
+  }
+
+  .diagnose-btn:disabled {
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* 結果エリア */
+  .results {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .results.show { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .result-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .icon-party { background: rgba(212,168,67,0.15); }
+  .icon-want { background: rgba(74,142,196,0.15); }
+  .icon-next { background: rgba(91,196,160,0.15); }
+
+  .result-section-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* パーティ表示 */
+  .party-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 500px) {
+    .party-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .party-member {
+    text-align: center;
+    padding: 12px 8px;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .party-member-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin: 0 auto 8px;
+    border: 2px solid var(--border);
+  }
+
+  .party-member-name {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .party-member-role {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .party-reason {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    padding: 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold-dim);
+  }
+
+  /* ほしいキャラ */
+  .want-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .want-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .want-priority {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(74,142,196,0.2);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .want-info { flex: 1; }
+
+  .want-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .want-reason {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* 次に育てるキャラ */
+  .next-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .next-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .next-order {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--wind);
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .next-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .next-reason {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* ローディング */
+  .loading {
+    text-align: center;
+    padding: 48px;
+    display: none;
+  }
+
+  .loading.show { display: block; }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading p {
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  /* hidden */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo-sub">Power Adventures</div>
+    <h1>パーティ診断</h1>
+    <p>持っているキャラを選ぶだけで、最適なパーティを提案します</p>
+  </header>
+
+  <!-- キャラ選択 -->
+  <section>
+    <div class="section-title"><h2>Step 1 — 持っているキャラを選択</h2></div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn fire" data-filter="火">🔥 火</button>
+      <button class="filter-btn water" data-filter="水">💧 水</button>
+      <button class="filter-btn wind" data-filter="風">🌿 風</button>
+      <button class="filter-btn" data-filter="剣士">剣士</button>
+      <button class="filter-btn" data-filter="弓使い">弓使い</button>
+      <button class="filter-btn" data-filter="魔法使い">魔法使い</button>
+      <button class="filter-btn" data-filter="魔闘士">魔闘士</button>
+      <button class="filter-btn" data-filter="僧侶">僧侶</button>
+      <button class="filter-btn" data-filter="重戦士">重戦士</button>
+    </div>
+
+    <div class="char-grid" id="charGrid"></div>
+
+    <div class="select-status">
+      <div class="select-count"><span id="selectedCount">0</span> 体選択中</div>
+      <button class="clear-btn" onclick="clearSelection()">選択をリセット</button>
+    </div>
+
+    <button class="diagnose-btn" id="diagnoseBtn" disabled onclick="diagnose()">
+      ⚔️ パーティを診断する
+    </button>
+  </section>
+
+  <!-- ローディング -->
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <p>Gemini が分析中...</p>
+  </div>
+
+  <!-- 結果 -->
+  <div class="results" id="results">
+
+    <div class="section-title"><h2>診断結果</h2></div>
+
+    <!-- おすすめパーティ -->
+    <div class="result-section">
+      <div class="result-section-header">
+        <div class="result-icon icon-party">⚔️</div>
+        <h3>おすすめパーティ編成</h3>
+      </div>
+      <div class="party-grid" id="partyGrid"></div>
+      <div class="party-reason" id="partyReason"></div>
+    </div>
+
+    <!-- ほしいキャラ -->
+    <div class="result-section">
+      <div class="result-section-header">
+        <div class="result-icon icon-want">⭐</div>
+        <h3>今すぐ欲しいキャラ</h3>
+      </div>
+      <div class="want-list" id="wantList"></div>
+    </div>
+
+    <!-- 次に育てるべきキャラ -->
+    <div class="result-section">
+      <div class="result-section-header">
+        <div class="result-icon icon-next">📈</div>
+        <h3>次に育てるべきキャラ</h3>
+      </div>
+      <div class="next-list" id="nextList"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const CHARACTERS = [
+  { name:"アイネル",   job:"魔闘士",   attr:"風", rank:"B",  img:"icons/ainel.webp" },
+  { name:"アオイ",     job:"魔法使い", attr:"水", rank:"A",  img:"icons/aoi.webp" },
+  { name:"アネモカ",   job:"魔法使い", attr:"風", rank:"S",  img:"icons/anemoka.webp" },
+  { name:"アラカロス", job:"魔法使い", attr:"火", rank:"S",  img:"icons/arakaros.webp" },
+  { name:"アンリ",     job:"僧侶",     attr:"風", rank:"S",  img:"icons/anri.webp" },
+  { name:"イコス",     job:"魔闘士",   attr:"水", rank:"S",  img:"icons/ikos.webp" },
+  { name:"オードウェル",job:"魔法使い",attr:"火", rank:"A",  img:"icons/oduwel.webp" },
+  { name:"カルメノ",   job:"剣士",     attr:"水", rank:"S",  img:"icons/karumeno.webp" },
+  { name:"グラウェン", job:"剣士",     attr:"風", rank:"S",  img:"icons/grawen.webp" },
+  { name:"ドミー",     job:"重戦士",   attr:"火", rank:"A",  img:"icons/domi.webp" },
+  { name:"マンダイン", job:"魔闘士",   attr:"火", rank:"B",  img:"icons/mandain.webp" },
+  { name:"バトラニー", job:"弓使い",   attr:"火", rank:"S",  img:"icons/batorani.webp" },
+  { name:"ハンシス",   job:"弓使い",   attr:"水", rank:"S",  img:"icons/hansis.webp" },
+  { name:"ホロウ",     job:"僧侶",     attr:"水", rank:"S",  img:"icons/horou.webp" },
+  { name:"マモル",     job:"剣士",     attr:"火", rank:"S",  img:"icons/mamoru.webp" },
+  { name:"リート",     job:"剣士",     attr:"風", rank:"A",  img:"icons/riito.webp" },
+  { name:"ミヤビ",     job:"弓使い",   attr:"風", rank:"S",  img:"icons/miyabi.webp" },
+  { name:"ヤンスロット",job:"弓使い",  attr:"風", rank:"S",  img:"icons/yanslot.webp" },
+  { name:"ライズ",     job:"重戦士",   attr:"水", rank:"A",  img:"icons/raizu.webp" },
+  { name:"マリセア",   job:"彼女候補", attr:"無", rank:"SS", img:"icons/marisea.webp" },
+];
+
+const selected = new Set();
+let currentFilter = "all";
+
+function renderGrid() {
+  const grid = document.getElementById("charGrid");
+  const filtered = currentFilter === "all"
+    ? CHARACTERS
+    : CHARACTERS.filter(c => c.attr === currentFilter || c.job === currentFilter);
+
+  grid.innerHTML = filtered.map(c => `
+    <div class="char-card ${selected.has(c.name) ? "selected" : ""}"
+         onclick="toggleChar('${c.name}')" data-name="${c.name}">
+      <span class="char-rank rank-${c.rank.toLowerCase()}">${c.rank}</span>
+      <div class="char-icon"><img src="${c.img}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+      <div class="char-name">${c.name}</div>
+      <div class="char-tags">
+        <span class="tag tag-${c.attr === "火" ? "fire" : c.attr === "水" ? "water" : c.attr === "風" ? "wind" : "job"}">${c.attr}</span>
+        <span class="tag tag-job">${c.job}</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleChar(name) {
+  if (selected.has(name)) selected.delete(name);
+  else selected.add(name);
+  updateCount();
+  renderGrid();
+}
+
+function updateCount() {
+  document.getElementById("selectedCount").textContent = selected.size;
+  document.getElementById("diagnoseBtn").disabled = selected.size < 1;
+}
+
+function clearSelection() {
+  selected.clear();
+  updateCount();
+  renderGrid();
+}
+
+// フィルター
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    renderGrid();
+  });
+});
+
+// 診断（ダミー表示）
+function diagnose() {
+  const selectedChars = CHARACTERS.filter(c => selected.has(c.name));
+
+  document.getElementById("loading").classList.add("show");
+  document.getElementById("results").classList.remove("show");
+
+  setTimeout(() => {
+    document.getElementById("loading").classList.remove("show");
+    showDummyResults(selectedChars);
+    document.getElementById("results").classList.add("show");
+    document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 1500);
+}
+
+function showDummyResults(chars) {
+  // パーティ（選択中から最大5体）
+  const party = chars.slice(0, 5);
+  const partyGrid = document.getElementById("partyGrid");
+  const roles = ["アタッカー", "サポート", "ヒーラー", "デバッファー", "タンク"];
+  partyGrid.innerHTML = party.map((c, i) => `
+    <div class="party-member">
+      <div class="party-member-icon"><img src="${c.img}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+      <div class="party-member-name">${c.name}</div>
+      <div class="party-member-role">${roles[i] || c.job}</div>
+    </div>
+  `).join("");
+
+  document.getElementById("partyReason").textContent =
+    "※ これはダミー表示です。Gemini API 連携後は、所持キャラの得意訓練・スキル・属性を分析して最適な編成と理由を提案します。";
+
+  // ほしいキャラ（ダミー）
+  const notOwned = CHARACTERS.filter(c => !selected.has(c.name)).slice(0, 3);
+  document.getElementById("wantList").innerHTML = notOwned.map((c, i) => `
+    <div class="want-item">
+      <div class="want-priority">${i + 1}</div>
+      <div class="want-info">
+        <div class="want-name">${c.name}（${c.job} / ${c.attr}）</div>
+        <div class="want-reason">最強評価${c.rank}。所持キャラと組み合わせると相性が良いため優先度高。</div>
+      </div>
+    </div>
+  `).join("");
+
+  // 次に育てるべきキャラ
+  const toLevel = chars.slice(0, 3);
+  document.getElementById("nextList").innerHTML = toLevel.map((c, i) => `
+    <div class="next-item">
+      <div class="next-order">${i + 1}</div>
+      <div>
+        <div class="next-name">${c.name}（${c.job} / ${c.attr}）</div>
+        <div class="next-reason">パーティの中核を担うキャラ。先に育てることで全体の安定度が上がります。</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+// 初期描画
+renderGrid();
+</script>
+</body>
+</html>
