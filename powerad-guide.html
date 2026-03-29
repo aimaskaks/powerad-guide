@@ -712,7 +712,7 @@ function showResults(result) {
   const partyGrid = document.getElementById("partyGrid");
   const parties = result.recommendedParties || [];
 
-  partyGrid.innerHTML = parties.map(party => {
+  partyGrid.innerHTML = parties.map((party, idx) => {
     const membersHtml = party.members.map(name => {
       const c = CHARACTERS.find(c => c.name === name);
       return `
@@ -724,9 +724,12 @@ function showResults(result) {
       `;
     }).join("");
     return `
-      <div style="margin-bottom:24px;">
-        <div style="font-size:14px;font-weight:700;color:var(--gold-light);margin-bottom:12px;">${party.title}</div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px;">${membersHtml}</div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <span style="background:rgba(212,168,67,0.15);color:var(--gold);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:1px;">${idx + 1}</span>
+          <span style="font-size:15px;font-weight:700;color:var(--gold-light);">${party.title}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;">${membersHtml}</div>
         <div class="party-reason">${party.reason}</div>
       </div>
     `;
