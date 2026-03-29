@@ -97,13 +97,20 @@ ${JSON.stringify(characters.characters.map(c => ({
     );
 
     const data = await response.json();
+    console.log('Gemini response status:', response.status);
+    console.log('Gemini response:', JSON.stringify(data).slice(0, 500));
+
+    if (!data.candidates || !data.candidates[0]) {
+      return res.status(500).json({ error: 'Gemini APIエラー', detail: JSON.stringify(data) });
+    }
+
     const text = data.candidates[0].content.parts[0].text;
     const clean = text.replace(/```json|```/g, '').trim();
     const result = JSON.parse(clean);
 
     return res.status(200).json(result);
   } catch (error) {
-    console.error(error);
+    console.error('catch error:', error);
     return res.status(500).json({ error: '診断に失敗しました。もう一度お試しください。' });
   }
 };
