@@ -108,9 +108,3 @@ ${JSON.stringify(characters.characters.map(c => ({
   }
 };
 ```
-
-保存して閉じたらpushしてください。
-```
-git add .
-git commit -m "fix: CommonJS統一"
-git push
