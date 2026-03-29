@@ -1,4 +1,5 @@
-const characters = require('../characters.json');
+const path = require('path');
+const characters = require(path.join(process.cwd(), 'characters.json'));
 
 const GAME_KNOWLEDGE = `
 【パワアドの基本システム】
@@ -33,12 +34,12 @@ const GAME_KNOWLEDGE = `
 - B：状況次第で有用
 `;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { ownedCharacters, targetJob } = req.body;
+  const { ownedCharacters } = req.body;
 
   if (!ownedCharacters || ownedCharacters.length === 0) {
     return res.status(400).json({ error: 'キャラクターを選択してください' });
@@ -105,4 +106,11 @@ ${JSON.stringify(characters.characters.map(c => ({
     console.error(error);
     return res.status(500).json({ error: '診断に失敗しました。もう一度お試しください。' });
   }
-}
+};
+```
+
+保存して閉じたらpushしてください。
+```
+git add .
+git commit -m "fix: CommonJS統一"
+git push
