@@ -107,4 +107,3 @@ ${JSON.stringify(characters.characters.map(c => ({
     return res.status(500).json({ error: '診断に失敗しました。もう一度お試しください。' });
   }
 };
-```
