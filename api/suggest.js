@@ -21,17 +21,26 @@ const GAME_KNOWLEDGE = `
 - 僧侶：精神力・生命力優先
 - 重戦士：生命力・器用さ優先
 
+【経験値と能力の対応】
+- 筋力経験値：パワー・生命力・耐久力に使う
+- 俊敏経験値：パワー・魔力・器用さ・耐久力に使う
+- 技術経験値：パワー・器用さ・耐久力に使う
+- 知力経験値：生命力・魔力・器用さ・精神力に使う
+- 精神経験値：生命力・魔力・精神力に使う
+
+【得意訓練と経験値の対応】
+- 持久力訓練：筋力・俊敏経験値
+- 筋力訓練：筋力経験値
+- 瞬発力訓練：俊敏経験値
+- 命中訓練：俊敏・技術経験値
+- 知能訓練：知力経験値
+- メンタル訓練：知力・精神経験値
+
 【デッキ編成のポイント】
 - 彼女枠（マリセア）は必須
 - 得意訓練を揃えてスペシャルタッグを狙う
+- 同じ得意訓練のキャラが3人以上いると効率が上がる
 - バトル用に必殺技・アクションスキル持ちを入れる
-- 評価が高いキャラほどイベントが多く経験値効率が良い
-
-【キャラ評価基準】
-- SS：唯一無二の性能（マリセアのみ）
-- S：非常に強力、優先して育てるべき
-- A：強い、所持していれば積極的に使う
-- B：状況次第で有用
 `;
 
 module.exports = async function handler(req, res) {
@@ -66,10 +75,13 @@ ${JSON.stringify(characters.characters.map(c => ({
 
 以下のJSON形式で回答してください。他の文字は一切含めないでください。
 {
-  "recommendedParty": [
-    { "name": "キャラ名", "role": "役割（アタッカー/ヒーラー/サポートなど）" }
+  "recommendedParties": [
+    {
+      "title": "【属性・ジョブ名】最強パーティ（例：【水属性・弓使い】最強パーティ）",
+      "members": ["キャラ名1", "キャラ名2", "キャラ名3", "キャラ名4", "キャラ名5"],
+      "reason": "得意訓練の組み合わせ、スペシャルタッグの発動しやすさ、ステータス効率など具体的な強みを150字程度で説明"
+    }
   ],
-  "partyReason": "このパーティを推奨する理由（200字程度）",
   "wantedCharacters": [
     { "name": "キャラ名", "reason": "欲しい理由（50字程度）" }
   ],
@@ -79,7 +91,10 @@ ${JSON.stringify(characters.characters.map(c => ({
 }
 
 条件：
-- recommendedPartyは所持キャラの中から最大5体（マリセアを所持していれば必ず含める）
+- recommendedPartiesは所持キャラで作れる異なるジョブ・属性の組み合わせを3パーティ提案する
+- 各パーティは必ずマリセアを含める（所持している場合）
+- メンバーは5人（マリセア含む）
+- 得意訓練の組み合わせとスペシャルタッグ効率を重視する
 - wantedCharactersは所持していないキャラの中から優先度順に最大3体
 - nextToLevelは所持キャラの中から育成優先順に最大3体
 `;
@@ -97,15 +112,12 @@ ${JSON.stringify(characters.characters.map(c => ({
     );
 
     const data = await response.json();
-    console.log('Gemini response status:', response.status);
-    console.log('Gemini response:', JSON.stringify(data).slice(0, 500));
 
     if (!data.candidates || !data.candidates[0]) {
       return res.status(500).json({ error: 'Gemini APIエラー', detail: JSON.stringify(data) });
     }
 
     const text = data.candidates[0].content.parts[0].text;
-    console.log('Gemini text:', text.slice(0, 300));
     const clean = text.replace(/```json|```/g, '').trim();
     const result = JSON.parse(clean);
 

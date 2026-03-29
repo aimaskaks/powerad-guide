@@ -710,18 +710,29 @@ async function diagnose() {
 
 function showResults(result) {
   const partyGrid = document.getElementById("partyGrid");
-  partyGrid.innerHTML = result.recommendedParty.map(p => {
-    const c = CHARACTERS.find(c => c.name === p.name);
+  const parties = result.recommendedParties || [];
+
+  partyGrid.innerHTML = parties.map(party => {
+    const membersHtml = party.members.map(name => {
+      const c = CHARACTERS.find(c => c.name === name);
+      return `
+        <div class="party-member">
+          <div class="party-member-icon"><img src="${c ? c.img : ''}" alt="${name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <div class="party-member-name">${name}</div>
+          <div class="party-member-role">${c ? c.job : ''}</div>
+        </div>
+      `;
+    }).join("");
     return `
-      <div class="party-member">
-        <div class="party-member-icon"><img src="${c ? c.img : ''}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
-        <div class="party-member-name">${p.name}</div>
-        <div class="party-member-role">${p.role}</div>
+      <div style="margin-bottom:24px;">
+        <div style="font-size:14px;font-weight:700;color:var(--gold-light);margin-bottom:12px;">${party.title}</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px;">${membersHtml}</div>
+        <div class="party-reason">${party.reason}</div>
       </div>
     `;
   }).join("");
 
-  document.getElementById("partyReason").textContent = result.partyReason;
+  document.getElementById("partyReason").textContent = "";
 
   document.getElementById("wantList").innerHTML = result.wantedCharacters.map((w, i) => `
     <div class="want-item">
