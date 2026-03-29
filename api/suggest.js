@@ -8,13 +8,62 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { ownedCharacters } = req.body;
+  const { ownedCharacters, targetJob, targetAttr } = req.body;
 
   if (!ownedCharacters || ownedCharacters.length === 0) {
     return res.status(400).json({ error: 'キャラクターを選択してください' });
   }
 
-  const prompt = `
+  const isTargetMode = !!(targetJob && targetAttr);
+
+  const prompt = isTargetMode ? `
+あなたはパワプロアドベンチャーズ（パワアド）の最高の攻略アドバイザーです。
+以下の攻略ナレッジベースを完全に理解した上で、ユーザーが指定したジョブ×属性の組み合わせに最適なパーティをJSON形式で返してください。
+
+===== 攻略ナレッジベース =====
+${KNOWLEDGE}
+================================
+
+===== ユーザーの所持キャラ =====
+${ownedCharacters.join('、')}
+================================
+
+===== 育てたいジョブ×属性 =====
+ジョブ：${targetJob}
+属性：${targetAttr}
+================================
+
+以下のJSON形式のみで回答してください。前置き・後書き・マークダウン記号は一切不要です。
+
+{
+  "recommendedParties": [
+    {
+      "title": "【${targetJob}×${targetAttr}属性】",
+      "members": ["キャラ名1", "キャラ名2", "キャラ名3", "キャラ名4", "キャラ名5", "キャラ名6"],
+      "trainingCombo": "得意訓練の組み合わせ説明",
+      "reason": "このパーティが【${targetJob}×${targetAttr}属性】の冒険者育成に最適な理由。得意訓練のシナジー・必殺技/ASの配置・ステータス効率を200字程度で説明"
+    }
+  ],
+  "wantedCharacters": [
+    { "name": "キャラ名", "reason": "【${targetJob}×${targetAttr}属性】育成においてこのキャラが必要な理由（50字程度）" }
+  ],
+  "nextToLevel": [
+    { "name": "キャラ名", "reason": "優先して育てるべき理由（50字程度）" }
+  ]
+}
+
+厳守事項：
+- titleは必ず「【${targetJob}×${targetAttr}属性】」で固定
+- 所持キャラの中から【${targetJob}×${targetAttr}属性】の冒険者育成に最も適したパーティを1つ提案
+- マリセアを所持していれば必ず含める
+- メンバーは必ず6人（マリセア含む）
+- ${targetJob}の育成に必要な得意訓練を優先して固める（3人固め or 2:2）
+- 必殺技を教えるキャラは必ず1人だけ（${targetJob}と${targetAttr}が一致するキャラ優先）
+- アクションスキルを教えるキャラは必ず1人だけ
+- 残り4枠はサポートスキル担当
+- wantedCharactersは所持していないキャラの中で【${targetJob}×${targetAttr}属性】育成に有効なキャラを最大3体
+- nextToLevelは所持キャラから【${targetJob}×${targetAttr}属性】育成優先順に最大3体
+` : `
 あなたはパワプロアドベンチャーズ（パワアド）の最高の攻略アドバイザーです。
 以下の攻略ナレッジベースを完全に理解した上で、ユーザーの所持キャラに最適なアドバイスをJSON形式で返してください。
 
@@ -33,7 +82,7 @@ ${ownedCharacters.join('、')}
     {
       "title": "【ジョブ×属性】（例：【剣士×火属性】）",
       "members": ["キャラ名1", "キャラ名2", "キャラ名3", "キャラ名4", "キャラ名5", "キャラ名6"],
-      "trainingCombo": "得意訓練の組み合わせ説明（例：持久力2人＋筋力2人でスペシャルタッグ狙い）",
+      "trainingCombo": "得意訓練の組み合わせ説明",
       "reason": "このパーティを推奨する具体的な理由。得意訓練のシナジー・必殺技/ASの配置・ステータス効率を200字程度で説明"
     }
   ],
@@ -54,7 +103,10 @@ ${ownedCharacters.join('、')}
 - 各パーティはマリセアを所持していれば必ず含める
 - メンバーは必ず6人（マリセア含む）
 - 得意訓練は必ず3人固める or 2:2で固める
-- 必殺技提供キャラは1〜2人、ASキャラは1〜2人に抑え残りはサポートスキル枠
+- 冒険者が習得できる必殺技は1つ・アクションスキルは1つのみ
+- 必殺技を教えるキャラは必ず1人だけ（2人以上は無駄になる）
+- アクションスキルを教えるキャラは必ず1人だけ（2人以上は無駄になる）
+- マリセア含む残り4枠は全員サポートスキル（パッシブ）を提供するキャラで埋める
 - wantedCharactersは所持していないキャラから最大3体
 - nextToLevelは所持キャラから育成優先順に最大3体
 `;

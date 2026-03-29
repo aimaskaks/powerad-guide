@@ -533,6 +533,66 @@
 
   /* hidden */
   .hidden { display: none !important; }
+
+  /* モード切替 */
+  .mode-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .mode-tab {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .mode-tab.active {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(212,168,67,0.08);
+  }
+
+  /* ジョブ×属性セレクター */
+  .target-selector {
+    display: none;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .target-selector.show { display: flex; }
+  .select-group {
+    flex: 1;
+  }
+  .select-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .styled-select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a8676' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  .styled-select:focus { outline: none; border-color: var(--gold-dim); }
 </style>
 </head>
 <body>
@@ -546,6 +606,33 @@
 
   <!-- キャラ選択 -->
   <section>
+    <!-- モード切替 -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('auto')" id="tab-auto">⚔️ おすすめ診断</button>
+      <button class="mode-tab" onclick="setMode('target')" id="tab-target">🎯 ジョブ×属性で探す</button>
+    </div>
+
+    <!-- ジョブ×属性セレクター（逆算モード） -->
+    <div class="target-selector" id="targetSelector">
+      <div class="select-group">
+        <span class="select-label">ROLE</span>
+        <select class="styled-select" id="targetJob">
+          <option value="剣士">⚔️ 剣士</option>
+          <option value="弓使い">🏹 弓使い</option>
+          <option value="魔法使い">🔮 魔法使い</option>
+          <option value="魔闘士">💥 魔闘士</option>
+        </select>
+      </div>
+      <div class="select-group">
+        <span class="select-label">ELEMENT</span>
+        <select class="styled-select" id="targetAttr">
+          <option value="火">🔥 火属性</option>
+          <option value="水">💧 水属性</option>
+          <option value="風">🌿 風属性</option>
+        </select>
+      </div>
+    </div>
+
     <div class="section-title"><h2>Step 1 — 持っているキャラを選択</h2></div>
 
     <div class="filter-bar">
@@ -691,16 +778,31 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
   });
 });
 
+// モード切替
+let currentMode = 'auto';
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('tab-auto').classList.toggle('active', mode === 'auto');
+  document.getElementById('tab-target').classList.toggle('active', mode === 'target');
+  document.getElementById('targetSelector').classList.toggle('show', mode === 'target');
+}
+
 // 診断（Gemini API）
 async function diagnose() {
   document.getElementById("loading").classList.add("show");
   document.getElementById("results").classList.remove("show");
 
+  const body = { ownedCharacters: [...selected] };
+  if (currentMode === 'target') {
+    body.targetJob = document.getElementById('targetJob').value;
+    body.targetAttr = document.getElementById('targetAttr').value;
+  }
+
   try {
     const response = await fetch("/api/suggest", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ownedCharacters: [...selected] })
+      body: JSON.stringify(body)
     });
 
     const result = await response.json();
