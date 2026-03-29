@@ -359,14 +359,9 @@
 
   /* パーティ表示 */
   .party-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  @media (max-width: 500px) {
-    .party-grid { grid-template-columns: repeat(3, 1fr); }
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .party-member {
