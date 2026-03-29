@@ -105,6 +105,7 @@ ${JSON.stringify(characters.characters.map(c => ({
     }
 
     const text = data.candidates[0].content.parts[0].text;
+    console.log('Gemini text:', text.slice(0, 300));
     const clean = text.replace(/```json|```/g, '').trim();
     const result = JSON.parse(clean);
 
