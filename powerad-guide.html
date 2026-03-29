@@ -682,57 +682,63 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
   });
 });
 
-// 診断（ダミー表示）
-function diagnose() {
-  const selectedChars = CHARACTERS.filter(c => selected.has(c.name));
-
+// 診断（Gemini API）
+async function diagnose() {
   document.getElementById("loading").classList.add("show");
   document.getElementById("results").classList.remove("show");
 
-  setTimeout(() => {
+  try {
+    const response = await fetch("/api/suggest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ownedCharacters: [...selected] })
+    });
+
+    const result = await response.json();
+
     document.getElementById("loading").classList.remove("show");
-    showDummyResults(selectedChars);
+    showResults(result);
     document.getElementById("results").classList.add("show");
     document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 1500);
+  } catch (error) {
+    document.getElementById("loading").classList.remove("show");
+    alert("診断に失敗しました。もう一度お試しください。");
+  }
 }
 
-function showDummyResults(chars) {
-  // パーティ（選択中から最大5体）
-  const party = chars.slice(0, 5);
+
+
+function showResults(result) {
   const partyGrid = document.getElementById("partyGrid");
-  const roles = ["アタッカー", "サポート", "ヒーラー", "デバッファー", "タンク"];
-  partyGrid.innerHTML = party.map((c, i) => `
-    <div class="party-member">
-      <div class="party-member-icon"><img src="${c.img}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
-      <div class="party-member-name">${c.name}</div>
-      <div class="party-member-role">${roles[i] || c.job}</div>
-    </div>
-  `).join("");
+  partyGrid.innerHTML = result.recommendedParty.map(p => {
+    const c = CHARACTERS.find(c => c.name === p.name);
+    return `
+      <div class="party-member">
+        <div class="party-member-icon"><img src="${c ? c.img : ''}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+        <div class="party-member-name">${p.name}</div>
+        <div class="party-member-role">${p.role}</div>
+      </div>
+    `;
+  }).join("");
 
-  document.getElementById("partyReason").textContent =
-    "※ これはダミー表示です。Gemini API 連携後は、所持キャラの得意訓練・スキル・属性を分析して最適な編成と理由を提案します。";
+  document.getElementById("partyReason").textContent = result.partyReason;
 
-  // ほしいキャラ（ダミー）
-  const notOwned = CHARACTERS.filter(c => !selected.has(c.name)).slice(0, 3);
-  document.getElementById("wantList").innerHTML = notOwned.map((c, i) => `
+  document.getElementById("wantList").innerHTML = result.wantedCharacters.map((w, i) => `
     <div class="want-item">
       <div class="want-priority">${i + 1}</div>
       <div class="want-info">
-        <div class="want-name">${c.name}（${c.job} / ${c.attr}）</div>
-        <div class="want-reason">最強評価${c.rank}。所持キャラと組み合わせると相性が良いため優先度高。</div>
+        <div class="want-name">${w.name}</div>
+        <div class="want-reason">${w.reason}</div>
       </div>
     </div>
   `).join("");
 
-  // 次に育てるべきキャラ
-  const toLevel = chars.slice(0, 3);
-  document.getElementById("nextList").innerHTML = toLevel.map((c, i) => `
+  document.getElementById("nextList").innerHTML = result.nextToLevel.map((n, i) => `
     <div class="next-item">
       <div class="next-order">${i + 1}</div>
       <div>
-        <div class="next-name">${c.name}（${c.job} / ${c.attr}）</div>
-        <div class="next-reason">パーティの中核を担うキャラ。先に育てることで全体の安定度が上がります。</div>
+        <div class="next-name">${n.name}</div>
+        <div class="next-reason">${n.reason}</div>
       </div>
     </div>
   `).join("");
