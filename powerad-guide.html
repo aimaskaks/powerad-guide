@@ -52,7 +52,7 @@
   .container {
     max-width: 960px;
     margin: 0 auto;
-    padding: 0 20px 80px;
+    padding: 0 16px 80px;
     position: relative;
     z-index: 1;
   }
@@ -60,9 +60,9 @@
   /* ヘッダー */
   header {
     text-align: center;
-    padding: 48px 0 40px;
+    padding: 32px 0 24px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 40px;
+    margin-bottom: 24px;
   }
 
   .logo-sub {
@@ -146,9 +146,12 @@
   /* キャラグリッド */
   .char-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 10px;
-    margin-bottom: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 480px) {
+    .char-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
   }
 
   .char-card {
@@ -366,34 +369,45 @@
 
   .party-member {
     text-align: center;
-    padding: 12px 8px;
+    padding: 10px 6px;
     background: var(--surface2);
     border-radius: 10px;
     border: 1px solid var(--border);
   }
 
   .party-member-icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: var(--surface);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    margin: 0 auto 8px;
+    margin: 0 auto 6px;
     border: 2px solid var(--border);
   }
 
   .party-member-name {
     font-size: 12px;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
   .party-member-role {
     font-size: 10px;
     color: var(--text-dim);
+    margin-bottom: 3px;
+  }
+
+  .party-member-training {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(212,168,67,0.12);
+    color: var(--gold-dim);
+    font-weight: 600;
   }
 
   .party-reason {
@@ -604,26 +618,26 @@
 
 <script>
 const CHARACTERS = [
-  { name:"アイネル",   job:"魔闘士",   attr:"風", rank:"B",  img:"icons/ainel.webp" },
-  { name:"アオイ",     job:"魔法使い", attr:"水", rank:"A",  img:"icons/aoi.webp" },
-  { name:"アネモカ",   job:"魔法使い", attr:"風", rank:"S",  img:"icons/anemoka.webp" },
-  { name:"アラカロス", job:"魔法使い", attr:"火", rank:"S",  img:"icons/arakaros.webp" },
-  { name:"アンリ",     job:"僧侶",     attr:"風", rank:"S",  img:"icons/anri.webp" },
-  { name:"イコス",     job:"魔闘士",   attr:"水", rank:"S",  img:"icons/ikos.webp" },
-  { name:"オードウェル",job:"魔法使い",attr:"火", rank:"A",  img:"icons/oduwel.webp" },
-  { name:"カルメノ",   job:"剣士",     attr:"水", rank:"S",  img:"icons/karumeno.webp" },
-  { name:"グラウェン", job:"剣士",     attr:"風", rank:"S",  img:"icons/grawen.webp" },
-  { name:"ドミー",     job:"重戦士",   attr:"火", rank:"A",  img:"icons/domi.webp" },
-  { name:"マンダイン", job:"魔闘士",   attr:"火", rank:"B",  img:"icons/mandain.webp" },
-  { name:"バトラニー", job:"弓使い",   attr:"火", rank:"S",  img:"icons/batorani.webp" },
-  { name:"ハンシス",   job:"弓使い",   attr:"水", rank:"S",  img:"icons/hansis.webp" },
-  { name:"ホロウ",     job:"僧侶",     attr:"水", rank:"S",  img:"icons/horou.webp" },
-  { name:"マモル",     job:"剣士",     attr:"火", rank:"S",  img:"icons/mamoru.webp" },
-  { name:"リート",     job:"剣士",     attr:"風", rank:"A",  img:"icons/riito.webp" },
-  { name:"ミヤビ",     job:"弓使い",   attr:"風", rank:"S",  img:"icons/miyabi.webp" },
-  { name:"ヤンスロット",job:"弓使い",  attr:"風", rank:"S",  img:"icons/yanslot.webp" },
-  { name:"ライズ",     job:"重戦士",   attr:"水", rank:"A",  img:"icons/raizu.webp" },
-  { name:"マリセア",   job:"彼女候補", attr:"無", rank:"SS", img:"icons/marisea.webp" },
+  { name:"アイネル",   job:"魔闘士",   attr:"風", rank:"B",  training:"命中",   img:"icons/ainel.webp" },
+  { name:"アオイ",     job:"魔法使い", attr:"水", rank:"A",  training:"知能",   img:"icons/aoi.webp" },
+  { name:"アネモカ",   job:"魔法使い", attr:"風", rank:"S",  training:"瞬発力", img:"icons/anemoka.webp" },
+  { name:"アラカロス", job:"魔法使い", attr:"火", rank:"S",  training:"メンタル",img:"icons/arakaros.webp" },
+  { name:"アンリ",     job:"僧侶",     attr:"風", rank:"S",  training:"瞬発力", img:"icons/anri.webp" },
+  { name:"イコス",     job:"魔闘士",   attr:"水", rank:"S",  training:"メンタル",img:"icons/ikos.webp" },
+  { name:"オードウェル",job:"魔法使い",attr:"火", rank:"A",  training:"知能",   img:"icons/oduwel.webp" },
+  { name:"カルメノ",   job:"剣士",     attr:"水", rank:"S",  training:"持久力", img:"icons/karumeno.webp" },
+  { name:"グラウェン", job:"剣士",     attr:"風", rank:"S",  training:"持久力", img:"icons/grawen.webp" },
+  { name:"ドミー",     job:"重戦士",   attr:"火", rank:"A",  training:"瞬発力", img:"icons/domi.webp" },
+  { name:"マンダイン", job:"魔闘士",   attr:"火", rank:"B",  training:"命中",   img:"icons/mandain.webp" },
+  { name:"バトラニー", job:"弓使い",   attr:"火", rank:"S",  training:"持久力", img:"icons/batorani.webp" },
+  { name:"ハンシス",   job:"弓使い",   attr:"水", rank:"S",  training:"瞬発力", img:"icons/hansis.webp" },
+  { name:"ホロウ",     job:"僧侶",     attr:"水", rank:"S",  training:"命中",   img:"icons/horou.webp" },
+  { name:"マモル",     job:"剣士",     attr:"火", rank:"S",  training:"持久力", img:"icons/mamoru.webp" },
+  { name:"リート",     job:"剣士",     attr:"風", rank:"A",  training:"筋力",   img:"icons/riito.webp" },
+  { name:"ミヤビ",     job:"弓使い",   attr:"風", rank:"S",  training:"瞬発力", img:"icons/miyabi.webp" },
+  { name:"ヤンスロット",job:"弓使い",  attr:"風", rank:"S",  training:"命中",   img:"icons/yanslot.webp" },
+  { name:"ライズ",     job:"重戦士",   attr:"水", rank:"A",  training:"筋力",   img:"icons/raizu.webp" },
+  { name:"マリセア",   job:"彼女候補", attr:"無", rank:"SS", training:"彼女候補",img:"icons/marisea.webp" },
 ];
 
 const selected = new Set();
@@ -715,6 +729,7 @@ function showResults(result) {
           <div class="party-member-icon"><img src="${c ? c.img : ''}" alt="${name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
           <div class="party-member-name">${name}</div>
           <div class="party-member-role">${c ? c.job : ''}</div>
+          ${c && c.training ? `<div class="party-member-training">${c.training}</div>` : ''}
         </div>
       `;
     }).join("");
