@@ -1,0 +1,868 @@
+{
+  "characters": [
+    {
+      "name": "アイネル",
+      "job": "魔闘士",
+      "attr": "風",
+      "training": "命中",
+      "img": "icons/ainel.webp",
+      "stats": { "hp": "E", "power": "G", "magic": "C", "dex": "D", "spirit": "F" },
+      "rating": { "best": "B", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "インサイトブロー",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力17の魔法ダメージを5回。自身に追撃状態を2ターン付与。追撃発動条件：行動終了時に毒状態の敵が1体以上。効果：敵前衛1体に威力15の魔法ダメージ。"
+        },
+        "morau_action": {
+          "name": "疾風斬",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージを3回。自身に追撃状態を3ターン付与。追撃発動条件：行動終了時に毒状態の敵が1体以上。効果：敵前衛1体に物理ダメージ。"
+        },
+        "morau_support": {
+          "name": "スケルトンキラー",
+          "type": "サポートスキル",
+          "effect": "自身のスケルトン特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "インサイトブロー",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力17の魔法ダメージを5回。自身に追撃状態を2ターン付与。追撃発動条件：行動終了時に毒状態の敵が1体以上。効果：敵前衛1体に威力15の魔法ダメージ。"
+        },
+        "own_action": {
+          "name": "ペネトレイトブロー",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に威力27の魔法ダメージを2回。対象にかかっている毒状態の数に応じてアクションスキル倍率が11%アップ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 80,
+        "special_tag_bonus": "80%",
+        "yaruki_up": "70%",
+        "binsho_bonus": 4,
+        "kotsu_event_bonus": "70%",
+        "kotsu_level_bonus": 2,
+        "skill_bonus": 4
+      },
+      "notes": "毒状態の敵への追撃コンボ型。アネモカやミヤビと組み合わせると追撃が機能する。スケルトン特効持ち。"
+    },
+    {
+      "name": "アオイ",
+      "job": "魔法使い",
+      "attr": "水",
+      "training": "知能",
+      "img": "icons/aoi.webp",
+      "stats": { "hp": "F", "power": "G", "magic": "B", "dex": "C", "spirit": "E" },
+      "rating": { "best": "A", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "マリンスフィア",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力84の魔法ダメージ。さらに敵前衛全体に威力18の魔法ダメージ。"
+        },
+        "morau_action": {
+          "name": "受け流しの構え",
+          "type": "アクションスキル",
+          "effect": "自身の魔法攻撃耐性を6%アップ。さらに物理攻撃耐性を6%アップ。4ターン継続。"
+        },
+        "morau_support": {
+          "name": "不滅",
+          "type": "サポートスキル",
+          "effect": "自身の魔法攻撃耐性を10%アップ。自身の物理攻撃倍率を3%ダウン。さらに魔法攻撃倍率を3%ダウン。"
+        },
+        "own_hissatsu": {
+          "name": "マリンスフィア",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力84の魔法ダメージ。さらに敵前衛全体に威力18の魔法ダメージ。"
+        },
+        "own_action": {
+          "name": "アクアブラスト",
+          "type": "アクションスキル",
+          "effect": "敵前衛全体に魔法ダメージ。さらに魔法攻撃耐性をダウン。2ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "90%",
+        "chikara_bonus": 6,
+        "yaruki_up": "90%",
+        "kotsu_event_bonus": "60%",
+        "kotsu_level_bonus": 2,
+        "skill_bonus": 6
+      },
+      "notes": "単体高火力+全体魔法の安定型アタッカー。魔法耐性バフと全体デバフも持つ。"
+    },
+    {
+      "name": "アネモカ",
+      "job": "魔法使い",
+      "attr": "風",
+      "training": "瞬発力",
+      "img": "icons/anemoka.webp",
+      "stats": { "hp": "F", "power": "G", "magic": "B", "dex": "E", "spirit": "F" },
+      "rating": { "best": "S", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "トキシックブリーズ",
+          "type": "必殺技",
+          "effect": "ランダムな敵前衛1体に威力21の魔法ダメージ。さらに魔法攻撃力5%分の毒状態を25%の確率で付与。3ターン継続。これを4回繰り返す。"
+        },
+        "morau_action": {
+          "name": "ボイズンアローズ",
+          "type": "アクションスキル",
+          "effect": "敵前衛全体に物理ダメージを3回。さらに毒状態を付与。3ターン継続。"
+        },
+        "morau_support": {
+          "name": "魔族キラー",
+          "type": "サポートスキル",
+          "effect": "自身の魔族特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "トキシックブリーズ",
+          "type": "必殺技",
+          "effect": "ランダムな敵前衛1体に威力21の魔法ダメージ。さらに魔法攻撃力5%分の毒状態を25%の確率で付与。3ターン継続。これを4回繰り返す。"
+        },
+        "own_action": {
+          "name": "カースウィンド",
+          "type": "アクションスキル",
+          "effect": "敵前衛全体に威力27の魔法ダメージ。さらに呪い状態を付与。3ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 75,
+        "special_tag_bonus": "100%",
+        "kotsu_event_bonus": "70%",
+        "chikara_bonus": 4,
+        "yaruki_up": "70%",
+        "kotsu_level_bonus": 2,
+        "binsho_bonus": 4
+      },
+      "notes": "最強評価S。毒＋呪いのデバフ撒き役。魔族特効持ち。アイネル・グラウェンの追撃コンボの起点になれる。"
+    },
+    {
+      "name": "アラカロス",
+      "job": "魔法使い",
+      "attr": "火",
+      "training": "メンタル",
+      "img": "icons/arakaros.webp",
+      "stats": { "hp": "E", "power": "F", "magic": "S", "dex": "B", "spirit": "B" },
+      "rating": { "best": "S", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "エクスプロージョン",
+          "type": "必殺技",
+          "effect": "敵前衛全体に威力42の魔法ダメージ。さらに魔法攻撃力7%分の火傷状態を付与。3ターン継続。"
+        },
+        "morau_action": {
+          "name": "ブレイズスナイプ",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージ。さらに魔法攻撃倍率をダウン。3ターン継続。"
+        },
+        "morau_support": {
+          "name": "ゴブリンキラー",
+          "type": "サポートスキル",
+          "effect": "自身のゴブリン特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "エクスプロージョン",
+          "type": "必殺技",
+          "effect": "敵前衛全体に威力42の魔法ダメージ。さらに魔法攻撃力7%分の火傷状態を付与。3ターン継続。"
+        },
+        "own_action": {
+          "name": "ソーサリーエリア",
+          "type": "アクションスキル",
+          "effect": "自身の魔法攻撃倍率を24%アップ。3ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 75,
+        "special_tag_bonus": "100%",
+        "kotsu_event_bonus": "60%",
+        "chikara_bonus": 6,
+        "training_count_up": "60%",
+        "kotsu_level_bonus": 2,
+        "spirit_bonus": 6
+      },
+      "notes": "魔力Sで最高クラスの魔法アタッカー。全体火傷付与と自己魔攻バフを持つ。バトラニーと火パーティで相性抜群。"
+    },
+    {
+      "name": "アンリ",
+      "job": "僧侶",
+      "attr": "風",
+      "training": "瞬発力",
+      "img": "icons/anri.webp",
+      "stats": { "hp": "E", "power": "G", "magic": "D", "dex": "E", "spirit": "B" },
+      "rating": { "best": "S", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "爽風の波動",
+          "type": "必殺技",
+          "effect": "自身と同じポジションにいる味方全員に威力30のHP回復。敵前衛全体の反撃状態を解除する。"
+        },
+        "morau_action": {
+          "name": "カースウィンド",
+          "type": "アクションスキル",
+          "effect": "敵前衛全体に威力27の魔法ダメージ。さらに呪い状態を付与。3ターン継続。"
+        },
+        "morau_support": {
+          "name": "フィッシュキラー",
+          "type": "サポートスキル",
+          "effect": "自身のフィッシュ特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "爽風の波動",
+          "type": "必殺技",
+          "effect": "自身と同じポジションにいる味方全員に威力30のHP回復。敵前衛全体の反撃状態を解除する。"
+        },
+        "own_action": {
+          "name": "ウィンドヒール",
+          "type": "アクションスキル",
+          "effect": "HP割合が最も低い味方1人に威力35のHP回復。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 90,
+        "special_tag_bonus": "90%",
+        "kotsu_event_bonus": "60%",
+        "chikara_bonus": 4,
+        "training_count_up": "70%",
+        "kotsu_level_bonus": 2,
+        "kotsu_event_rate_up": "40%"
+      },
+      "notes": "回復＋反撃解除＋呪い付与を持つ万能ヒーラー。初期評価90と高くスペシャルタッグが発動しやすい。"
+    },
+    {
+      "name": "イコス",
+      "job": "魔闘士",
+      "attr": "水",
+      "training": "メンタル",
+      "img": "icons/ikos.webp",
+      "stats": { "hp": "D", "power": "G", "magic": "C", "dex": "D", "spirit": "F" },
+      "rating": { "best": "S", "reroll": "S" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "水脚乱舞",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力28の魔法ダメージを3回。自身に反撃状態を4ターン付与。反撃発生時、攻撃してきた相手に威力20の魔法ダメージ。"
+        },
+        "morau_action": {
+          "name": "アクアグランド",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージ。さらに物理攻撃耐性をダウン。2ターン継続。"
+        },
+        "morau_support": {
+          "name": "一点集中",
+          "type": "サポートスキル",
+          "effect": "自身の単体攻撃倍率を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "水脚乱舞",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力28の魔法ダメージを3回。自身に反撃状態を4ターン付与。反撃発生時、攻撃してきた相手に威力20の魔法ダメージ。"
+        },
+        "own_action": {
+          "name": "受け流しの構え",
+          "type": "アクションスキル",
+          "effect": "自身の魔法攻撃耐性を6%アップ。さらに物理攻撃耐性を6%アップ。4ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 65,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "80%",
+        "kotsu_event_rate_up": "90%",
+        "chikara_bonus": 6,
+        "kotsu_level_bonus": 2,
+        "yaruki_up": "40%"
+      },
+      "notes": "反撃型の魔闘士アタッカー。単体攻撃倍率アップと耐性バフも兼ねる。リセマラSの高評価。"
+    },
+    {
+      "name": "オードウェル",
+      "job": "魔法使い",
+      "attr": "火",
+      "training": "知能",
+      "img": "icons/oduwel.webp",
+      "stats": { "hp": "F", "power": "G", "magic": "B", "dex": "D", "spirit": "E" },
+      "rating": { "best": "A", "reroll": "S" },
+      "skills": {
+        "morau_support": {
+          "name": "魔力探求",
+          "type": "サポートスキル",
+          "effect": "自身の魔法攻撃倍率を12%アップ。さらに物理攻撃倍率を3%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "マジックバレット",
+          "type": "必殺技",
+          "effect": "敵前衛1体に魔法ダメージ。"
+        },
+        "own_action": {
+          "name": "ファイアウィンド",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に魔法ダメージ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "60%",
+        "kotsu_event_rate_up": "70%",
+        "training_count_up": "40%",
+        "kotsu_level_bonus": 2,
+        "chikara_bonus": 4
+      },
+      "notes": "リセマラS。魔法攻撃倍率アップのサポートスキルを持ち火パーティのサポートとして機能する。"
+    },
+    {
+      "name": "カルメノ",
+      "job": "剣士",
+      "attr": "水",
+      "training": "持久力",
+      "img": "icons/karumeno.webp",
+      "stats": { "hp": "E", "power": "D", "magic": "F", "dex": "E", "spirit": "D" },
+      "rating": { "best": "S", "reroll": "S" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "渦巻く剣刃",
+          "type": "必殺技",
+          "effect": "自身に反撃状態を4ターン付与。反撃発生時、攻撃してきた相手に威力50の物理ダメージ。"
+        },
+        "morau_action": {
+          "name": "アクアブラスト",
+          "type": "アクションスキル",
+          "effect": "敵前衛全体に魔法ダメージ。さらに魔法攻撃耐性をダウン。2ターン継続。"
+        },
+        "own_hissatsu": {
+          "name": "渦巻く剣刃",
+          "type": "必殺技",
+          "effect": "自身に反撃状態を4ターン付与。反撃発生時、攻撃してきた相手に威力50の物理ダメージ。"
+        },
+        "own_action": {
+          "name": "守護水斬",
+          "type": "アクションスキル",
+          "effect": "自身の物理攻撃耐性を4%アップ。さらに魔法攻撃耐性を4%アップ。4ターン継続。敵前衛1体に威力53の物理ダメージ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "100%",
+        "kotsu_event_bonus": "70%",
+        "spirit_bonus": 4,
+        "training_count_up": "70%",
+        "kotsu_level_bonus": 2,
+        "kotsu_event_rate_up": "40%"
+      },
+      "notes": "反撃型タンク剣士。威力50の反撃と耐性バフを両立。水パーティで主軸になれる。"
+    },
+    {
+      "name": "グラウェン",
+      "job": "剣士",
+      "attr": "風",
+      "training": "持久力",
+      "img": "icons/grawen.webp",
+      "stats": { "hp": "E", "power": "C", "magic": "F", "dex": "C", "spirit": "C" },
+      "rating": { "best": "S", "reroll": "S" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "テンペストスイープ",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力120の物理ダメージ。"
+        },
+        "morau_action": {
+          "name": "烈風霊破",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体の物理攻撃倍率を7%ダウン。さらに物理攻撃耐性を5%ダウン。2ターン継続。"
+        },
+        "morau_support": {
+          "name": "必殺の書",
+          "type": "サポートスキル",
+          "effect": "自身の必殺技倍率を22%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "テンペストスイープ",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力120の物理ダメージ。"
+        },
+        "own_action": {
+          "name": "疾風斬",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージを3回。自身に追撃状態を3ターン付与。追撃発動条件：行動終了時に毒状態の敵が1体以上。効果：敵前衛1体に物理ダメージ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "100%",
+        "kotsu_event_bonus": "80%",
+        "match_exp_bonus": "20%",
+        "power_bonus": 6,
+        "kotsu_level_bonus": 2,
+        "kotsu_event_rate_up": "40%"
+      },
+      "notes": "威力120の単体物理高火力。必殺の書で必殺技倍率も高い。毒起点の追撃も持ち風パーティの要。"
+    },
+    {
+      "name": "ドミー",
+      "job": "重戦士",
+      "attr": "火",
+      "training": "瞬発力",
+      "img": "icons/domi.webp",
+      "stats": { "hp": "C", "power": "E", "magic": "G", "dex": "F", "spirit": "E" },
+      "rating": { "best": "A", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "ルミナスオーラ",
+          "type": "必殺技",
+          "effect": "自身と物理防御力が最も低い味方1体の物理攻撃耐性を18%アップ。さらに魔法攻撃耐性を18%アップ。4ターン継続。"
+        },
+        "morau_action": {
+          "name": "炎魔連撃",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に魔法ダメージを2回。さらに魔法攻撃耐性をダウン。2ターン継続。"
+        },
+        "morau_support": {
+          "name": "妖狐キラー",
+          "type": "サポートスキル",
+          "effect": "自身の妖狐特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "ルミナスオーラ",
+          "type": "必殺技",
+          "effect": "自身と物理防御力が最も低い味方1体の物理攻撃耐性を18%アップ。さらに魔法攻撃耐性を18%アップ。4ターン継続。"
+        },
+        "own_action": {
+          "name": "炎の盾",
+          "type": "アクションスキル",
+          "effect": "自身の物理攻撃耐性を4%アップ。さらに魔法攻撃耐性を4%アップ。3ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "100%",
+        "kotsu_event_bonus": "60%",
+        "skill_bonus": 6,
+        "yaruki_up": "90%",
+        "kotsu_level_bonus": 2,
+        "kotsu_event_rate_up": "40%"
+      },
+      "notes": "パーティ全体の耐性を大幅に上げる守護型重戦士。やる気効果アップ90%でサクセス貢献度も高い。"
+    },
+    {
+      "name": "マンダイン",
+      "job": "魔闘士",
+      "attr": "火",
+      "training": "命中",
+      "img": "icons/mandain.webp",
+      "stats": { "hp": "D", "power": "F", "magic": "D", "dex": "G", "spirit": "D" },
+      "rating": { "best": "B", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "炎熱フィスト",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力84の魔法ダメージ。対象にかかっている火傷状態の数に応じて必殺倍率が12%アップ。"
+        },
+        "morau_action": {
+          "name": "火連斬",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージを3回。さらに物理攻撃耐性をダウン。2ターン継続。"
+        },
+        "morau_support": {
+          "name": "ヌメリンキラー",
+          "type": "サポートスキル",
+          "effect": "自身のヌメリン特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "炎熱フィスト",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力84の魔法ダメージ。対象にかかっている火傷状態の数に応じて必殺倍率が12%アップ。"
+        },
+        "own_action": {
+          "name": "炎魔連撃",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に魔法ダメージを2回。さらに魔法攻撃耐性をダウン。2ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "60%",
+        "yaruki_up": "110%",
+        "binsho_bonus": 4,
+        "kotsu_level_bonus": 2,
+        "match_exp_bonus": "20%"
+      },
+      "notes": "火傷状態の敵への必殺倍率アップ。バトラニー・アラカロスと組み合わせると効果的。やる気効果アップ110%。"
+    },
+    {
+      "name": "バトラニー",
+      "job": "弓使い",
+      "attr": "火",
+      "training": "持久力",
+      "img": "icons/batorani.webp",
+      "stats": { "hp": "F", "power": "E", "magic": "F", "dex": "D", "spirit": "C" },
+      "rating": { "best": "S", "reroll": "S" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "レインバーン",
+          "type": "必殺技",
+          "effect": "敵中衛全体に威力42の物理ダメージ。さらに物理攻撃力7%分の火傷状態を付与。3ターン継続。"
+        },
+        "morau_action": {
+          "name": "ホーリーライト",
+          "type": "アクションスキル",
+          "effect": "HP割合が最も低い味方1人に威力30のHP回復。自身と同じポジションにいる味方全員の魔法攻撃耐性を4%アップ。3ターン継続。"
+        },
+        "morau_support": {
+          "name": "烈",
+          "type": "サポートスキル",
+          "effect": "自身の列攻撃倍率を16%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "レインバーン",
+          "type": "必殺技",
+          "effect": "敵中衛全体に威力42の物理ダメージ。さらに物理攻撃力7%分の火傷状態を付与。3ターン継続。"
+        },
+        "own_action": {
+          "name": "ブレイズスナイプ",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージ。さらに魔法攻撃倍率をダウン。3ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "60%",
+        "spirit_bonus": 4,
+        "training_count_up": "90%",
+        "kotsu_level_bonus": 2,
+        "binsho_bonus": 4
+      },
+      "notes": "貴重な火傷付与弓使い。中衛全体攻撃＋回復スキルも持つ万能型。アラカロス・マンダインとの火パーティ編成に最適。"
+    },
+    {
+      "name": "ハンシス",
+      "job": "弓使い",
+      "attr": "水",
+      "training": "瞬発力",
+      "img": "icons/hansis.webp",
+      "stats": { "hp": "E", "power": "C", "magic": "F", "dex": "B", "spirit": "D" },
+      "rating": { "best": "S", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "夢幻の水矢",
+          "type": "必殺技",
+          "effect": "敵前衛全体に威力43の物理ダメージ。さらに睡眠状態を付与。1ターン継続。"
+        },
+        "morau_action": {
+          "name": "ヒールシャワー",
+          "type": "アクションスキル",
+          "effect": "味方前衛全員にHP回復。"
+        },
+        "morau_support": {
+          "name": "タフネス",
+          "type": "サポートスキル",
+          "effect": "自身のHPを10%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "夢幻の水矢",
+          "type": "必殺技",
+          "effect": "敵前衛全体に威力43の物理ダメージ。さらに睡眠状態を付与。1ターン継続。"
+        },
+        "own_action": {
+          "name": "カウンタースタンス",
+          "type": "アクションスキル",
+          "effect": "自身に反撃状態を2ターン付与。反撃発生時、攻撃してきた相手に威力31の物理ダメージ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "90%",
+        "kotsu_event_bonus": "60%",
+        "binsho_bonus": 4,
+        "training_count_up": "90%",
+        "kotsu_level_bonus": 2,
+        "kotsu_event_rate_up": "60%"
+      },
+      "notes": "全体攻撃＋睡眠付与の制御型弓使い。前衛全体回復も持つ。水パーティでアオイやカルメノと相性良い。"
+    },
+    {
+      "name": "ホロウ",
+      "job": "僧侶",
+      "attr": "水",
+      "training": "命中",
+      "img": "icons/horou.webp",
+      "stats": { "hp": "D", "power": "G", "magic": "D", "dex": "F", "spirit": "C" },
+      "rating": { "best": "S", "reroll": "S" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "生命の雫",
+          "type": "必殺技",
+          "effect": "HP割合が最も低い味方1人と同じポジションにいる味方全員に威力30のHP回復。さらに火傷状態を解除する。"
+        },
+        "morau_action": {
+          "name": "守護水斬",
+          "type": "アクションスキル",
+          "effect": "自身の物理攻撃耐性を4%アップ。さらに魔法攻撃耐性を4%アップ。4ターン継続。敵前衛1体に威力53の物理ダメージ。"
+        },
+        "morau_support": {
+          "name": "トリックスター",
+          "type": "サポートスキル",
+          "effect": "自身のアクションスキル倍率を45%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "生命の雫",
+          "type": "必殺技",
+          "effect": "HP割合が最も低い味方1人と同じポジションにいる味方全員に威力30のHP回復。さらに火傷状態を解除する。"
+        },
+        "own_action": {
+          "name": "ヒールシャワー",
+          "type": "アクションスキル",
+          "effect": "味方前衛全員にHP回復。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 65,
+        "kotsu_event_bonus": "80%",
+        "special_tag_bonus": "70%",
+        "binsho_bonus": 8,
+        "kotsu_event_rate_up": "80%",
+        "kotsu_level_bonus": 2,
+        "skill_bonus": 6
+      },
+      "notes": "最強S・リセマラS。回復＋火傷解除＋耐性バフを持つ最高クラスのヒーラー。トリックスターでAS倍率45%アップ。"
+    },
+    {
+      "name": "マモル",
+      "job": "剣士",
+      "attr": "火",
+      "training": "持久力",
+      "img": "icons/mamoru.webp",
+      "stats": { "hp": "C", "power": "A", "magic": "F", "dex": "C", "spirit": "E" },
+      "rating": { "best": "S", "reroll": "B" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "ライジングストライク",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力120の物理ダメージ。"
+        },
+        "morau_action": {
+          "name": "ソーサリーエリア",
+          "type": "アクションスキル",
+          "effect": "自身の魔法攻撃倍率を24%アップ。3ターン継続。"
+        },
+        "morau_support": {
+          "name": "加護",
+          "type": "サポートスキル",
+          "effect": "自身の全体攻撃耐性を10%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "ライジングストライク",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力120の物理ダメージ。"
+        },
+        "own_action": {
+          "name": "火連斬",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージを3回。さらに物理攻撃耐性をダウン。2ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "110%",
+        "kotsu_event_bonus": "60%",
+        "kotsu_event_rate_up": "70%",
+        "power_bonus": 4,
+        "kotsu_level_bonus": 2,
+        "training_count_up": "40%"
+      },
+      "notes": "パワーAの最高クラス物理アタッカー。スペシャルタグボーナス110%が非常に高い。火パーティの中核。"
+    },
+    {
+      "name": "リート",
+      "job": "剣士",
+      "attr": "風",
+      "training": "筋力",
+      "img": "icons/riito.webp",
+      "stats": { "hp": "D", "power": "B", "magic": "F", "dex": "D", "spirit": "F" },
+      "rating": { "best": "A", "reroll": "S" },
+      "skills": {
+        "morau_support": {
+          "name": "剛力",
+          "type": "サポートスキル",
+          "effect": "自身の物理攻撃倍率を12%アップ。さらに魔法攻撃倍率を3%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "スラッシュ",
+          "type": "必殺技",
+          "effect": "敵前衛1体に物理ダメージ。"
+        },
+        "own_action": {
+          "name": "真空斬り",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "40%",
+        "power_bonus": 6,
+        "yaruki_up": "80%",
+        "kotsu_level_bonus": 2,
+        "skill_bonus": 4
+      },
+      "notes": "リセマラS。物理攻撃倍率アップのサポートスキルを持つ剣士。風パーティのアタッカー補助。"
+    },
+    {
+      "name": "ミヤビ",
+      "job": "弓使い",
+      "attr": "風",
+      "training": "瞬発力",
+      "img": "icons/miyabi.webp",
+      "stats": { "hp": "F", "power": "D", "magic": "G", "dex": "B", "spirit": "F" },
+      "rating": { "best": "S", "reroll": "B" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "ゲイルシュート",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力120の物理ダメージ。"
+        },
+        "morau_action": {
+          "name": "ペネトレイトブロー",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に威力27の魔法ダメージを2回。対象にかかっている毒状態の数に応じてアクションスキル倍率が11%アップ。"
+        },
+        "morau_support": {
+          "name": "平常心",
+          "type": "サポートスキル",
+          "effect": "自身の通常攻撃倍率を40%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "ゲイルシュート",
+          "type": "必殺技",
+          "effect": "敵前衛1体に威力120の物理ダメージ。"
+        },
+        "own_action": {
+          "name": "ボイズンアローズ",
+          "type": "アクションスキル",
+          "effect": "敵前衛全体に物理ダメージを3回。さらに毒状態を付与。3ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 80,
+        "special_tag_bonus": "100%",
+        "kotsu_event_bonus": "60%",
+        "kotsu_event_rate_up": "70%",
+        "speed_bonus": 6,
+        "kotsu_level_bonus": 2,
+        "chikara_bonus": 6
+      },
+      "notes": "威力120の高火力弓使い。毒付与＋毒起点のAS倍率アップも持つ。アイネル・グラウェンとのコンボ起点。"
+    },
+    {
+      "name": "ヤンスロット",
+      "job": "弓使い",
+      "attr": "風",
+      "training": "命中",
+      "img": "icons/yanslot.webp",
+      "stats": { "hp": "F", "power": "E", "magic": "G", "dex": "C", "spirit": "D" },
+      "rating": { "best": "S", "reroll": "S" },
+      "skills": {
+        "morau_support": {
+          "name": "エースアタッカー",
+          "type": "サポートスキル",
+          "effect": "自身の物理攻撃倍率を12%アップ。さらに魔法攻撃倍率を3%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "パワーシュート",
+          "type": "必殺技",
+          "effect": "物理防御力が最も低い敵中衛1体に物理ダメージ。"
+        },
+        "own_action": {
+          "name": "エアショット",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に威力70の物理ダメージ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 70,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "60%",
+        "binsho_bonus": 4,
+        "yaruki_up": "70%",
+        "kotsu_level_bonus": 2,
+        "match_exp_bonus": "20%"
+      },
+      "notes": "リセマラS。物理防御の低い中衛を狙い撃ちできる弓使い。風パーティの命中訓練担当。"
+    },
+    {
+      "name": "ライズ",
+      "job": "重戦士",
+      "attr": "水",
+      "training": "筋力",
+      "img": "icons/raizu.webp",
+      "stats": { "hp": "D", "power": "F", "magic": "G", "dex": "E", "spirit": "E" },
+      "rating": { "best": "A", "reroll": "A" },
+      "skills": {
+        "morau_hissatsu": {
+          "name": "守りの鼓舞",
+          "type": "必殺技",
+          "effect": "自身と同じポジションにいる仲間全員の物理攻撃耐性を9%アップ。さらに魔法攻撃耐性を9%アップ。4ターン継続。"
+        },
+        "morau_action": {
+          "name": "カウンタースタンス",
+          "type": "アクションスキル",
+          "effect": "自身に反撃状態を2ターン付与。反撃発生時、攻撃してきた相手に威力31の物理ダメージ。"
+        },
+        "morau_support": {
+          "name": "サイクロプスキラー",
+          "type": "サポートスキル",
+          "effect": "自身のサイクロプス特効を12%アップ。"
+        },
+        "own_hissatsu": {
+          "name": "守りの鼓舞",
+          "type": "必殺技",
+          "effect": "自身と同じポジションにいる仲間全員の物理攻撃耐性を9%アップ。さらに魔法攻撃耐性を9%アップ。4ターン継続。"
+        },
+        "own_action": {
+          "name": "アクアグランド",
+          "type": "アクションスキル",
+          "effect": "敵前衛1体に物理ダメージ。さらに物理攻撃耐性をダウン。2ターン継続。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 65,
+        "special_tag_bonus": "80%",
+        "kotsu_event_bonus": "90%",
+        "kotsu_event_rate_up": "90%",
+        "skill_bonus": 4,
+        "kotsu_level_bonus": 2,
+        "power_bonus": 6
+      },
+      "notes": "パーティ全体耐性9%アップの守護型重戦士。コツイベントボーナス・コツイベント率アップが高くサクセスにも貢献。"
+    },
+    {
+      "name": "マリセア",
+      "job": "彼女候補",
+      "attr": "無",
+      "training": "彼女候補",
+      "img": "icons/marisea.webp",
+      "stats": null,
+      "rating": { "best": "SS", "reroll": "B" },
+      "skills": {
+        "morau_support": {
+          "name": "慈愛の祈り",
+          "type": "サポートスキル",
+          "effect": "自身の物理攻撃耐性を5%アップ。さらに魔法攻撃耐性を5%アップ。"
+        }
+      },
+      "event_bonus": {
+        "initial_eval": 65,
+        "event_bonus": "80%",
+        "training_injury_down": 3,
+        "event_hp_recovery_up": "50%",
+        "yaruki_up": "50%",
+        "training_hp_cost_down": "20%"
+      },
+      "notes": "SRで唯一の彼女候補。デートで体力回復＋やる気アップ＋コツ取得。訓練体力消費量ダウン20%。デッキに必ず1枠確保すべき最重要キャラ。戦闘キャラではないためステータスなし。"
+    }
+  ]
+}
