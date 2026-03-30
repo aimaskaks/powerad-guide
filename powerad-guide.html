@@ -596,6 +596,8 @@
   }
   .styled-select:focus { outline: none; border-color: var(--gold-dim); }
 </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5843536105440700"
+     crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
@@ -721,14 +723,12 @@
         <h3>NotebookLMで詳しく相談する</h3>
       </div>
       <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">以下の文章をコピーして、パワアド専用NotebookLMに貼り付けると、より詳しい攻略相談ができます。</p>
-      <div style="position:relative;">
-        <textarea id="notebookPrompt" readonly
-          style="width:100%;min-height:120px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-size:13px;font-family:'Noto Sans JP',sans-serif;line-height:1.7;resize:none;box-sizing:border-box;"></textarea>
-        <button onclick="copyPrompt()" id="copyBtn"
-          style="position:absolute;top:8px;right:8px;padding:6px 14px;background:rgba(212,168,67,0.15);border:1px solid var(--gold-dim);border-radius:6px;color:var(--gold-light);font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;">
-          コピー
-        </button>
-      </div>
+      <textarea id="notebookPrompt" readonly
+        style="width:100%;min-height:140px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-size:13px;font-family:'Noto Sans JP',sans-serif;line-height:1.7;resize:none;box-sizing:border-box;margin-bottom:10px;"></textarea>
+      <button onclick="copyPrompt()" id="copyBtn"
+        style="width:100%;padding:12px;background:rgba(212,168,67,0.15);border:1px solid var(--gold-dim);border-radius:8px;color:var(--gold-light);font-size:14px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;letter-spacing:1px;">
+        📋 上の文章をコピーする
+      </button>
       <a href="https://notebooklm.google.com/notebook/2a0bf243-0908-4acc-a49a-9ed7ebd466a0" target="_blank" rel="noopener"
         style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:14px;background:rgba(66,133,244,0.1);border:1px solid rgba(66,133,244,0.3);border-radius:10px;color:#6ab0ff;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s;">
         📖 パワアド専用 NotebookLM を開く →
@@ -848,11 +848,7 @@ function updateNotebookPrompt() {
 
 現状の手持ちで組める最適なパーティ編成を、可能であれば属性やコンセプト（魔法特化、物理特化など）を変えて最大3パターン提案してください。
 また、今後の編成をさらに強力にするために、これから狙うべきおすすめの未所持キャラクターも教えてください。
-
-出力時の厳守ルール：
-スマホで見やすいように、表（テーブル）は絶対に使用しないでください。
-また、箇条書きの「・」の項目は、絶対に横に繋げず、1キャラごと、あるいは1項目ごとに必ず改行を入れて縦に並べてください。
-以下のフォーマットに厳密に従ってテキストのみで出力してください。
+スマホで見やすいように、表（テーブル）は絶対に使用せず、以下のフォーマットに厳密に従ってテキストのみで出力してください。
 
 【自前編成案1：〇〇パーティ】
 ・キャラ名（属性／ジョブ／得意訓練）
@@ -863,12 +859,10 @@ function updateNotebookPrompt() {
 ・キャラ名（属性／ジョブ／得意訓練）
 
 この編成をおすすめする理由は以下の通りです。
-
-    （見出しとなる理由1）
-    （理由1の詳細な解説）
-
-    （見出しとなる理由2）
-    （理由2の詳細な解説）
+1. （見出しとなる理由1）
+（理由1の詳細な解説）
+2. （見出しとなる理由2）
+（理由2の詳細な解説）
 
 （※組める場合は、編成案2、編成案3も同様のフォーマットで出力してください）
 
@@ -1049,5 +1043,13 @@ if (saved) {
 updateCount();
 renderGrid();
 </script>
+  <!-- a8.net広告 -->
+  <div style="text-align:center;padding:24px 16px 40px;background:var(--surface);">
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:12px;letter-spacing:1px;">ADVERTISEMENT</p>
+    <a href="https://px.a8.net/svt/ejp?a8mat=4AVIVX+EVU6RM+ONS+TVJ4X" rel="nofollow">
+      <img border="0" width="336" height="280" alt="" src="https://www26.a8.net/svt/bgt?aid=260131677900&wid=003&eno=01&mid=s00000003196005018000&mc=1">
+    </a>
+    <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4AVIVX+EVU6RM+ONS+TVJ4X" alt="">
+  </div>
 </body>
 </html>
