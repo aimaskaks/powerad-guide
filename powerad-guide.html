@@ -648,6 +648,7 @@
       <button class="filter-btn" data-filter="魔闘士">魔闘士</button>
       <button class="filter-btn" data-filter="僧侶">僧侶</button>
       <button class="filter-btn" data-filter="重戦士">重戦士</button>
+      <button class="filter-btn" data-filter="彼女候補">💖 彼女候補</button>
     </div>
     <div class="filter-bar" id="trainingFilter">
       <button class="filter-btn active" data-training="all">得意訓練：全て</button>
@@ -710,6 +711,29 @@
       <div class="next-list" id="nextList"></div>
     </div>
 
+  </div>
+
+  <!-- NotebookLMボックス -->
+  <div id="notebookSection" style="display:none;margin-top:32px;">
+    <div class="result-section">
+      <div class="result-section-header">
+        <div class="result-icon" style="background:rgba(66,133,244,0.15);">📋</div>
+        <h3>NotebookLMで詳しく相談する</h3>
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">以下の文章をコピーして、パワアド専用NotebookLMに貼り付けると、より詳しい攻略相談ができます。</p>
+      <div style="position:relative;">
+        <textarea id="notebookPrompt" readonly
+          style="width:100%;min-height:120px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-size:13px;font-family:'Noto Sans JP',sans-serif;line-height:1.7;resize:none;box-sizing:border-box;"></textarea>
+        <button onclick="copyPrompt()" id="copyBtn"
+          style="position:absolute;top:8px;right:8px;padding:6px 14px;background:rgba(212,168,67,0.15);border:1px solid var(--gold-dim);border-radius:6px;color:var(--gold-light);font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;">
+          コピー
+        </button>
+      </div>
+      <a href="https://notebooklm.google.com/notebook/2a0bf243-0908-4acc-a49a-9ed7ebd466a0" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:14px;background:rgba(66,133,244,0.1);border:1px solid rgba(66,133,244,0.3);border-radius:10px;color:#6ab0ff;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s;">
+        📖 パワアド専用 NotebookLM を開く →
+      </a>
+    </div>
   </div>
 
 </div>
@@ -800,6 +824,7 @@ function renderGrid() {
 function toggleChar(name) {
   if (selected.has(name)) selected.delete(name);
   else selected.add(name);
+  localStorage.setItem('powerad_selected', JSON.stringify([...selected]));
   updateCount();
   renderGrid();
 }
@@ -807,10 +832,44 @@ function toggleChar(name) {
 function updateCount() {
   document.getElementById("selectedCount").textContent = selected.size;
   document.getElementById("diagnoseBtn").disabled = selected.size < 1;
+  updateNotebookPrompt();
+}
+
+function updateNotebookPrompt() {
+  const section = document.getElementById("notebookSection");
+  const textarea = document.getElementById("notebookPrompt");
+  if (selected.size === 0) {
+    section.style.display = "none";
+    return;
+  }
+  section.style.display = "block";
+  const charList = [...selected].join("、");
+  textarea.value = `以下のキャラクターを所持しています。
+${charList}
+
+現状の手持ちで組める最強のパーティ編成を教えてください。また、それぞれのキャラの役割や、その編成にした理由も知りたいです。`;
+}
+
+function copyPrompt() {
+  const textarea = document.getElementById("notebookPrompt");
+  navigator.clipboard.writeText(textarea.value).then(() => {
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "✓ コピー済み";
+    btn.style.background = "rgba(91,196,160,0.2)";
+    btn.style.borderColor = "var(--wind)";
+    btn.style.color = "var(--wind)";
+    setTimeout(() => {
+      btn.textContent = "コピー";
+      btn.style.background = "rgba(212,168,67,0.15)";
+      btn.style.borderColor = "var(--gold-dim)";
+      btn.style.color = "var(--gold-light)";
+    }, 2000);
+  });
 }
 
 function clearSelection() {
   selected.clear();
+  localStorage.removeItem('powerad_selected');
   updateCount();
   renderGrid();
 }
@@ -949,7 +1008,18 @@ function showResults(result) {
   `).join("");
 }
 
+// localStorageから選択状態を復元
+const saved = localStorage.getItem('powerad_selected');
+if (saved) {
+  try {
+    JSON.parse(saved).forEach(name => {
+      if (CHARACTERS.find(c => c.name === name)) selected.add(name);
+    });
+  } catch(e) {}
+}
+
 // 初期描画
+updateCount();
 renderGrid();
 </script>
 </body>
