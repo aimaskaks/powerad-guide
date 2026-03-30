@@ -865,14 +865,16 @@ function showResults(result) {
   const parties = result.recommendedParties || [];
 
   partyGrid.innerHTML = parties.map((party, idx) => {
-    const targetJob = document.getElementById('targetJob') ? document.getElementById('targetJob').value : null;
-    const targetAttr = document.getElementById('targetAttr') ? document.getElementById('targetAttr').value : null;
+    // titleから「ジョブ×属性」を抽出（例：【剣士×火属性】→ job:剣士 attr:火）
+    const titleMatch = party.title.match(/【(.+?)×(.+?)属性】/);
+    const partyJob  = titleMatch ? titleMatch[1] : (document.getElementById('targetJob') ? document.getElementById('targetJob').value : null);
+    const partyAttr = titleMatch ? titleMatch[2] : (document.getElementById('targetAttr') ? document.getElementById('targetAttr').value : null);
     const skillTypeColor = { "必殺技": "var(--gold)", "AS": "var(--wind)", "サポート": "var(--text-dim)" };
 
     const membersHtml = party.members.map(name => {
       const c = CHARACTERS.find(c => c.name === name);
-      const skill = (currentMode === 'target' && targetJob && targetAttr && c)
-        ? getSkillForTarget(c, targetJob, targetAttr)
+      const skill = (partyJob && partyAttr && c)
+        ? getSkillForTarget(c, partyJob, partyAttr)
         : (c && c.skills && c.skills.support && c.skills.support.name ? { name: c.skills.support.name, type: "サポート" } : null);
       return `
         <div class="party-member">
