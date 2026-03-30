@@ -707,46 +707,47 @@
 
 <script>
 const CHARACTERS = [
+  // morau配列: 各キャラが冒険者に教えられるスキル一覧（job/attr=nullは誰でも取得可）
   { name:"アイネル",   job:"魔闘士",   attr:"風", rank:"B",  training:"命中",    img:"icons/ainel.webp",
-    skills:{ hissatsu:{name:"インサイトブロー",job:"重戦士",attr:"風"}, action:{name:"疾風斬",job:null,attr:null}, support:{name:"スケルトンキラー"} } },
+    morau:[{name:"インサイトブロー",type:"必殺技",job:"重戦士",attr:"風"},{name:"疾風斬",type:"AS",job:null,attr:null},{name:"スケルトンキラー",type:"サポート",job:null,attr:null}] },
   { name:"アオイ",     job:"魔法使い", attr:"水", rank:"A",  training:"知能",    img:"icons/aoi.webp",
-    skills:{ hissatsu:{name:"マリンスフィア",job:"魔法使い",attr:"水"}, action:{name:"アクアブラスト",job:"魔闘士",attr:"水"}, support:{name:"不滅"} } },
+    morau:[{name:"マリンスフィア",type:"必殺技",job:"魔法使い",attr:"水"},{name:"受け流しの構え",type:"AS",job:"魔闘士",attr:"水"},{name:"不滅",type:"サポート",job:null,attr:null}] },
   { name:"アネモカ",   job:"魔法使い", attr:"風", rank:"S",  training:"瞬発力",  img:"icons/anemoka.webp",
-    skills:{ hissatsu:{name:"トキシックブリーズ",job:"魔法使い",attr:"風"}, action:{name:"カースウィンド",job:"魔法使い",attr:"風"}, support:{name:"魔族キラー"} } },
+    morau:[{name:"トキシックブリーズ",type:"必殺技",job:"魔法使い",attr:"風"},{name:"ポイズンアローズ",type:"AS",job:null,attr:null},{name:"魔族キラー",type:"サポート",job:null,attr:null}] },
   { name:"アラカロス", job:"魔法使い", attr:"火", rank:"S",  training:"メンタル",img:"icons/arakaros.webp",
-    skills:{ hissatsu:{name:"エクスプロージョン",job:"魔法使い",attr:"火"}, action:{name:"ソーサリーエリア",job:"魔法使い",attr:"火"}, support:{name:"ゴブリンキラー"} } },
+    morau:[{name:"エクスプロージョン",type:"必殺技",job:"魔法使い",attr:"火"},{name:"ブレイズスナイプ",type:"AS",job:"弓使い",attr:"火"},{name:"ゴブリンキラー",type:"サポート",job:null,attr:null}] },
   { name:"アンリ",     job:"僧侶",     attr:"風", rank:"S",  training:"瞬発力",  img:"icons/anri.webp",
-    skills:{ hissatsu:{name:"爽風の波動",job:"僧侶",attr:"風"}, action:{name:"カースウィンド",job:"魔法使い",attr:"風"}, support:{name:"フィッシュキラー"} } },
+    morau:[{name:"爽風の波動",type:"必殺技",job:"僧侶",attr:"風"},{name:"カースウィンド",type:"AS",job:"魔法使い",attr:"風"},{name:"フィッシュキラー",type:"サポート",job:null,attr:null}] },
   { name:"イコス",     job:"魔闘士",   attr:"水", rank:"S",  training:"メンタル",img:"icons/ikos.webp",
-    skills:{ hissatsu:{name:"水脚乱舞",job:"魔闘士",attr:"水"}, action:{name:"受け流しの構え",job:"魔闘士",attr:"水"}, support:{name:"一点集中"} } },
+    morau:[{name:"水脚乱舞",type:"必殺技",job:"魔闘士",attr:"水"},{name:"アクアグランド",type:"AS",job:"重戦士",attr:"水"},{name:"一点集中",type:"サポート",job:null,attr:null}] },
   { name:"オードウェル",job:"魔法使い",attr:"火", rank:"A",  training:"知能",    img:"icons/oduwel.webp",
-    skills:{ hissatsu:{name:"マジックバレット",job:"魔法使い",attr:"火"}, action:{name:"ファイアウィンド",job:"魔法使い",attr:"火"}, support:{name:"魔力探求"} } },
+    morau:[{name:"魔力探求",type:"サポート",job:null,attr:null}] },
   { name:"カルメノ",   job:"剣士",     attr:"水", rank:"S",  training:"持久力",  img:"icons/karumeno.webp",
-    skills:{ hissatsu:{name:"渦巻く剣刃",job:"剣士",attr:"水"}, action:{name:"守護水斬",job:"剣士",attr:"水"}, support:{name:null} } },
+    morau:[{name:"渦巻く剣刃",type:"必殺技",job:"剣士",attr:"水"},{name:"アクアブラスト",type:"AS",job:null,attr:null}] },
   { name:"グラウェン", job:"剣士",     attr:"風", rank:"S",  training:"持久力",  img:"icons/grawen.webp",
-    skills:{ hissatsu:{name:"テンペストスイープ",job:"剣士",attr:"風"}, action:{name:"疾風斬",job:"剣士",attr:"風"}, support:{name:"必殺の書"} } },
+    morau:[{name:"テンペストスイープ",type:"必殺技",job:"剣士",attr:"風"},{name:"烈風震破",type:"AS",job:"重戦士",attr:"風"},{name:"必殺の書",type:"サポート",job:null,attr:null}] },
   { name:"ドミー",     job:"重戦士",   attr:"火", rank:"A",  training:"瞬発力",  img:"icons/domi.webp",
-    skills:{ hissatsu:{name:"ルミナスオーラ",job:"重戦士",attr:"火"}, action:{name:"炎の盾",job:"重戦士",attr:"火"}, support:{name:"妖狐キラー"} } },
+    morau:[{name:"ルミナスオーラ",type:"必殺技",job:"重戦士",attr:"火"},{name:"炎魔連撃",type:"AS",job:"魔闘士",attr:"火"},{name:"妖狐キラー",type:"サポート",job:null,attr:null}] },
   { name:"マンダイン", job:"魔闘士",   attr:"火", rank:"B",  training:"命中",    img:"icons/mandain.webp",
-    skills:{ hissatsu:{name:"炎熱フィスト",job:"魔闘士",attr:"火"}, action:{name:"炎魔連撃",job:"魔闘士",attr:"火"}, support:{name:"ヌメリンキラー"} } },
+    morau:[{name:"炎熱フィスト",type:"必殺技",job:"魔闘士",attr:"火"},{name:"火連斬",type:"AS",job:"剣士",attr:"火"},{name:"ヌメリンキラー",type:"サポート",job:null,attr:null}] },
   { name:"バトラニー", job:"弓使い",   attr:"火", rank:"S",  training:"持久力",  img:"icons/batorani.webp",
-    skills:{ hissatsu:{name:"レインバーン",job:"弓使い",attr:"火"}, action:{name:"ブレイズスナイプ",job:"弓使い",attr:"火"}, support:{name:"烈"} } },
+    morau:[{name:"レインバーン",type:"必殺技",job:"弓使い",attr:"火"},{name:"ホーリーライト",type:"AS",job:"僧侶",attr:"火"},{name:"烈",type:"サポート",job:null,attr:null}] },
   { name:"ハンシス",   job:"弓使い",   attr:"水", rank:"S",  training:"瞬発力",  img:"icons/hansis.webp",
-    skills:{ hissatsu:{name:"夢幻の水矢",job:"弓使い",attr:"水"}, action:{name:"カウンタースタンス",job:"弓使い",attr:"水"}, support:{name:"タフネス"} } },
+    morau:[{name:"夢幻の水矢",type:"必殺技",job:"弓使い",attr:"水"},{name:"ヒールシャワー",type:"AS",job:"僧侶",attr:"水"},{name:"タフネス",type:"サポート",job:null,attr:null}] },
   { name:"ホロウ",     job:"僧侶",     attr:"水", rank:"S",  training:"命中",    img:"icons/horou.webp",
-    skills:{ hissatsu:{name:"生命の雫",job:"僧侶",attr:"水"}, action:{name:"守護水斬",job:"剣士",attr:"水"}, support:{name:"トリックスター"} } },
+    morau:[{name:"生命の雫",type:"必殺技",job:"僧侶",attr:"水"},{name:"守護水斬",type:"AS",job:"剣士",attr:"水"},{name:"トリックスター",type:"サポート",job:null,attr:null}] },
   { name:"マモル",     job:"剣士",     attr:"火", rank:"S",  training:"持久力",  img:"icons/mamoru.webp",
-    skills:{ hissatsu:{name:"ライジングストライク",job:"剣士",attr:"火"}, action:{name:"ソーサリーエリア",job:"魔法使い",attr:"火"}, support:{name:"加護"} } },
+    morau:[{name:"ライジングストライク",type:"必殺技",job:"剣士",attr:"火"},{name:"ソーサリーエリア",type:"AS",job:"魔法使い",attr:"火"},{name:"加護",type:"サポート",job:null,attr:null}] },
   { name:"リート",     job:"剣士",     attr:"風", rank:"A",  training:"筋力",    img:"icons/riito.webp",
-    skills:{ hissatsu:{name:"スラッシュ",job:"剣士",attr:"風"}, action:{name:"真空斬り",job:"剣士",attr:"風"}, support:{name:"剛力"} } },
+    morau:[{name:"剛力",type:"サポート",job:null,attr:null}] },
   { name:"ミヤビ",     job:"弓使い",   attr:"風", rank:"S",  training:"瞬発力",  img:"icons/miyabi.webp",
-    skills:{ hissatsu:{name:"ゲイルシュート",job:"弓使い",attr:"風"}, action:{name:"ボイズンアローズ",job:"弓使い",attr:"風"}, support:{name:"平常心"} } },
+    morau:[{name:"ゲイルシュート",type:"必殺技",job:"弓使い",attr:"風"},{name:"ペネトレイトブロー",type:"AS",job:"魔闘士",attr:"風"},{name:"平常心",type:"サポート",job:null,attr:null}] },
   { name:"ヤンスロット",job:"弓使い",  attr:"風", rank:"S",  training:"命中",    img:"icons/yanslot.webp",
-    skills:{ hissatsu:{name:"パワーシュート",job:"弓使い",attr:"風"}, action:{name:"エアショット",job:"弓使い",attr:"風"}, support:{name:"エースアタッカー"} } },
+    morau:[{name:"エースアタッカー",type:"サポート",job:null,attr:null}] },
   { name:"ライズ",     job:"重戦士",   attr:"水", rank:"A",  training:"筋力",    img:"icons/raizu.webp",
-    skills:{ hissatsu:{name:"守りの鼓舞",job:"重戦士",attr:"水"}, action:{name:"アクアグランド",job:"重戦士",attr:"水"}, support:{name:"サイクロプスキラー"} } },
+    morau:[{name:"守りの鼓舞",type:"必殺技",job:"重戦士",attr:"水"},{name:"カウンタースタンス",type:"AS",job:"弓使い",attr:"水"},{name:"サイクロプスキラー",type:"サポート",job:null,attr:null}] },
   { name:"マリセア",   job:"彼女候補", attr:"無", rank:"SS", training:"彼女候補",img:"icons/marisea.webp",
-    skills:{ hissatsu:{name:null}, action:{name:null}, support:{name:"慈愛の祈り"} } },
+    morau:[{name:"慈愛の祈り",type:"サポート",job:null,attr:null}] },
 ];
 
 const selected = new Set();
@@ -754,20 +755,16 @@ let currentFilter = "all";
 
 // ジョブ×属性から取得できる金特を返す
 function getSkillForTarget(c, targetJob, targetAttr) {
-  if (!c.skills) return null;
-  const s = c.skills;
-  // 必殺技：ジョブと属性が一致
-  if (s.hissatsu && s.hissatsu.name && s.hissatsu.job === targetJob && s.hissatsu.attr === targetAttr) {
-    return { name: s.hissatsu.name, type: "必殺技" };
-  }
-  // AS：ジョブと属性が一致
-  if (s.action && s.action.name && s.action.job === targetJob && s.action.attr === targetAttr) {
-    return { name: s.action.name, type: "AS" };
-  }
-  // サポートスキルは常に取得可能
-  if (s.support && s.support.name) {
-    return { name: s.support.name, type: "サポート" };
-  }
+  if (!c.morau || c.morau.length === 0) return null;
+  // 1. ジョブ AND 属性が完全一致するスキルを優先
+  const exact = c.morau.find(s => s.job === targetJob && s.attr === targetAttr);
+  if (exact) return { name: exact.name, type: exact.type };
+  // 2. 制限なし（job=null）のASや必殺技
+  const free = c.morau.find(s => s.job === null && (s.type === "AS" || s.type === "必殺技"));
+  if (free) return { name: free.name, type: free.type };
+  // 3. サポートスキル（常に取得可能）
+  const support = c.morau.find(s => s.type === "サポート");
+  if (support) return { name: support.name, type: support.type };
   return null;
 }
 
