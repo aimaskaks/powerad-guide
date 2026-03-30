@@ -648,7 +648,7 @@
       <button class="filter-btn" data-filter="魔闘士">魔闘士</button>
       <button class="filter-btn" data-filter="僧侶">僧侶</button>
       <button class="filter-btn" data-filter="重戦士">重戦士</button>
-      <button class="filter-btn" data-filter="彼女候補">💖 彼女候補</button>
+      <button class="filter-btn" data-filter="彼女候補">彼女候補</button>
     </div>
     <div class="filter-bar" id="trainingFilter">
       <button class="filter-btn active" data-training="all">得意訓練：全て</button>
@@ -844,10 +844,31 @@ function updateNotebookPrompt() {
   }
   section.style.display = "block";
   const charList = [...selected].join("、");
-  textarea.value = `以下のキャラクターを所持しています。
-${charList}
+  textarea.value = `以下のキャラクターを所持しています。${charList}
 
-現状の手持ちで組める最強のパーティ編成を教えてください。また、それぞれのキャラの役割や、その編成にした理由も知りたいです。`;
+現状の手持ちで組める最適なパーティ編成を、可能であれば属性やコンセプト（魔法特化、物理特化など）を変えて最大3パターン提案してください。
+また、今後の編成をさらに強力にするために、これから狙うべきおすすめの未所持キャラクターも教えてください。
+スマホで見やすいように、表（テーブル）は絶対に使用せず、以下のフォーマットに厳密に従ってテキストのみで出力してください。
+
+【自前編成案1：〇〇パーティ】
+・キャラ名（属性／ジョブ／得意訓練）
+・キャラ名（属性／ジョブ／得意訓練）
+・キャラ名（属性／ジョブ／得意訓練）
+・キャラ名（属性／ジョブ／得意訓練）
+・キャラ名（属性／ジョブ／得意訓練）
+・キャラ名（属性／ジョブ／得意訓練）
+
+この編成をおすすめする理由は以下の通りです。
+1. （見出しとなる理由1）
+（理由1の詳細な解説）
+2. （見出しとなる理由2）
+（理由2の詳細な解説）
+
+（※組める場合は、編成案2、編成案3も同様のフォーマットで出力してください）
+
+【今後狙いたいおすすめキャラ】
+・キャラ名（属性／ジョブ）
+狙うべき理由：（なぜこのキャラを引くと手持ちのパーティが強化されるのか、具体的なシナジーを解説してください）`;
 }
 
 function copyPrompt() {
