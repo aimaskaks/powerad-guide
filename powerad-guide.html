@@ -769,10 +769,7 @@ function getSkillForTarget(c, targetJob, targetAttr) {
   // 1. ジョブ AND 属性が完全一致するスキルを優先
   const exact = c.morau.find(s => s.job === targetJob && s.attr === targetAttr);
   if (exact) return { name: exact.name, type: exact.type };
-  // 2. 制限なし（job=null）のASや必殺技
-  const free = c.morau.find(s => s.job === null && (s.type === "AS" || s.type === "必殺技"));
-  if (free) return { name: free.name, type: free.type };
-  // 3. サポートスキル（常に取得可能）
+  // 2. 一致しない場合はサポートスキルのみ表示
   const support = c.morau.find(s => s.type === "サポート");
   if (support) return { name: support.name, type: support.type };
   return null;
