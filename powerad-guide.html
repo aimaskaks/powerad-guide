@@ -878,7 +878,6 @@ function showResults(result) {
         <div class="party-member">
           <div class="party-member-icon"><img src="${c ? c.img : ''}" alt="${name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
           <div class="party-member-name">${name}</div>
-          <div class="party-member-role">${c ? c.job : ''}</div>
           ${c && c.training ? `<div class="party-member-training">${c.training}</div>` : ''}
           ${skill ? `<div style="font-size:9px;margin-top:3px;padding:2px 4px;border-radius:4px;background:rgba(255,255,255,0.05);color:${skillTypeColor[skill.type]};line-height:1.3;">${skill.type}<br>${skill.name}</div>` : ''}
         </div>
