@@ -58,8 +58,8 @@ ${ownedCharacters.join('、')}
 - マリセアを所持していれば必ず含める
 - メンバーは必ず6人（マリセア含む）
 - ${targetJob}の育成に必要な得意訓練を優先して固める（3人固め or 2:2）
-- 必殺技を教えるキャラは必ず1人だけ（${targetJob}と${targetAttr}が一致するキャラ優先）
-- アクションスキルを教えるキャラは必ず1人だけ
+- 必ず【ジョブ×属性別 取得可能スキル対応表】を参照し、【${targetJob}×${targetAttr}属性】の必殺技を教えられるキャラを1人・ASを教えられるキャラを1人、必ず編成に含めること
+- 対応するキャラが所持キャラにいない場合のみ、その旨をreasonに記載しwantedCharactersに挙げること
 - 残り4枠はサポートスキル担当
 - wantedCharactersは所持していないキャラの中で【${targetJob}×${targetAttr}属性】育成に有効なキャラを最大3体
 - nextToLevelは所持キャラから【${targetJob}×${targetAttr}属性】育成優先順に最大3体
