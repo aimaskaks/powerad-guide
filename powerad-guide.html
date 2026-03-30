@@ -649,6 +649,15 @@
       <button class="filter-btn" data-filter="僧侶">僧侶</button>
       <button class="filter-btn" data-filter="重戦士">重戦士</button>
     </div>
+    <div class="filter-bar" id="trainingFilter">
+      <button class="filter-btn active" data-training="all">得意訓練：全て</button>
+      <button class="filter-btn" data-training="持久力">持久力</button>
+      <button class="filter-btn" data-training="筋力">筋力</button>
+      <button class="filter-btn" data-training="瞬発力">瞬発力</button>
+      <button class="filter-btn" data-training="命中">命中</button>
+      <button class="filter-btn" data-training="知能">知能</button>
+      <button class="filter-btn" data-training="メンタル">メンタル</button>
+    </div>
 
     <div class="char-grid" id="charGrid"></div>
 
@@ -709,7 +718,7 @@
 const CHARACTERS = [
   // morau配列: 各キャラが冒険者に教えられるスキル一覧（job/attr=nullは誰でも取得可）
   { name:"アイネル",   job:"魔闘士",   attr:"風", rank:"B",  training:"命中",    img:"icons/ainel.webp",
-    morau:[{name:"インサイトブロー",type:"必殺技",job:"重戦士",attr:"風"},{name:"疾風斬",type:"AS",job:null,attr:null},{name:"スケルトンキラー",type:"サポート",job:null,attr:null}] },
+    morau:[{name:"インサイトブロー",type:"必殺技",job:"重戦士",attr:"風"},{name:"疾風斬",type:"AS",job:"剣士",attr:"風"},{name:"スケルトンキラー",type:"サポート",job:null,attr:null}] },
   { name:"アオイ",     job:"魔法使い", attr:"水", rank:"A",  training:"知能",    img:"icons/aoi.webp",
     morau:[{name:"マリンスフィア",type:"必殺技",job:"魔法使い",attr:"水"},{name:"受け流しの構え",type:"AS",job:"魔闘士",attr:"水"},{name:"不滅",type:"サポート",job:null,attr:null}] },
   { name:"アネモカ",   job:"魔法使い", attr:"風", rank:"S",  training:"瞬発力",  img:"icons/anemoka.webp",
@@ -752,6 +761,7 @@ const CHARACTERS = [
 
 const selected = new Set();
 let currentFilter = "all";
+let currentTrainingFilter = "all";
 
 // ジョブ×属性から取得できる金特を返す
 function getSkillForTarget(c, targetJob, targetAttr) {
@@ -770,9 +780,11 @@ function getSkillForTarget(c, targetJob, targetAttr) {
 
 function renderGrid() {
   const grid = document.getElementById("charGrid");
-  const filtered = currentFilter === "all"
-    ? CHARACTERS
-    : CHARACTERS.filter(c => c.attr === currentFilter || c.job === currentFilter);
+  const filtered = CHARACTERS.filter(c => {
+    const jobAttrMatch = currentFilter === "all" || c.attr === currentFilter || c.job === currentFilter;
+    const trainingMatch = currentTrainingFilter === "all" || c.training === currentTrainingFilter;
+    return jobAttrMatch && trainingMatch;
+  });
 
   grid.innerHTML = filtered.map(c => `
     <div class="char-card ${selected.has(c.name) ? "selected" : ""}"
@@ -782,7 +794,7 @@ function renderGrid() {
       <div class="char-name">${c.name}</div>
       <div class="char-tags">
         <span class="tag tag-${c.attr === "火" ? "fire" : c.attr === "水" ? "water" : c.attr === "風" ? "wind" : "job"}">${c.attr}</span>
-        <span class="tag tag-job">${c.job}</span>
+        <span class="tag tag-job">${c.training}</span>
       </div>
     </div>
   `).join("");
@@ -806,12 +818,22 @@ function clearSelection() {
   renderGrid();
 }
 
-// フィルター
-document.querySelectorAll(".filter-btn").forEach(btn => {
+// フィルター（ジョブ・属性）
+document.querySelectorAll(".filter-btn[data-filter]").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.closest(".filter-bar").querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentFilter = btn.dataset.filter;
+    renderGrid();
+  });
+});
+
+// フィルター（得意訓練）
+document.querySelectorAll(".filter-btn[data-training]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn[data-training]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentTrainingFilter = btn.dataset.training;
     renderGrid();
   });
 });
