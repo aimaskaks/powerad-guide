@@ -746,7 +746,7 @@ const CHARACTERS = [
   { name:"アオイ",     job:"魔法使い", attr:"水", rank:"A",  training:"知能",    img:"icons/aoi.webp",
     morau:[{name:"マリンスフィア",type:"必殺技",job:"魔法使い",attr:"水"},{name:"受け流しの構え",type:"AS",job:null,attr:null},{name:"不滅",type:"サポート",job:null,attr:null}] },
   { name:"アネモカ",   job:"魔法使い", attr:"風", rank:"S",  training:"瞬発力",  img:"icons/anemoka.webp",
-    morau:[{name:"トキシックブリーズ",type:"必殺技",job:"魔法使い",attr:"風"},{name:"ポイズンアローズ",type:"AS",job:null,attr:null},{name:"魔族キラー",type:"サポート",job:null,attr:null}] },
+    morau:[{name:"トキシックブリーズ",type:"必殺技",job:"魔法使い",attr:"風"},{name:"ポイズンアローズ",type:"AS",job:"弓使い",attr:"風"},{name:"魔族キラー",type:"サポート",job:null,attr:null}] },
   { name:"アラカロス", job:"魔法使い", attr:"火", rank:"S",  training:"メンタル",img:"icons/arakaros.webp",
     morau:[{name:"エクスプロージョン",type:"必殺技",job:"魔法使い",attr:"火"},{name:"ブレイズスナイプ",type:"AS",job:"弓使い",attr:"火"},{name:"ゴブリンキラー",type:"サポート",job:null,attr:null}] },
   { name:"アンリ",     job:"僧侶",     attr:"風", rank:"S",  training:"知能",  img:"icons/anri.webp",
@@ -756,7 +756,7 @@ const CHARACTERS = [
   { name:"オードウェル",job:"魔法使い",attr:"火", rank:"A",  training:"知能",    img:"icons/oduwel.webp",
     morau:[{name:"魔力探求",type:"サポート",job:null,attr:null}] },
   { name:"カルメノ",   job:"剣士",     attr:"水", rank:"S",  training:"持久力",  img:"icons/karumeno.webp",
-    morau:[{name:"渦巻く剣刃",type:"必殺技",job:"剣士",attr:"水"},{name:"アクアブラスト",type:"AS",job:null,attr:null},{name:"魔力改変",type:"サポート",job:null,attr:null}] },
+    morau:[{name:"渦巻く剣刃",type:"必殺技",job:"剣士",attr:"水"},{name:"アクアブラスト",type:"AS",job:"魔法使い",attr:"水"},{name:"魔力改変",type:"サポート",job:null,attr:null}] },
   { name:"グラウェン", job:"剣士",     attr:"風", rank:"S",  training:"持久力",  img:"icons/grawen.webp",
     morau:[{name:"テンペストスイープ",type:"必殺技",job:"剣士",attr:"風"},{name:"烈風震破",type:"AS",job:"重戦士",attr:"風"},{name:"必殺の書",type:"サポート",job:null,attr:null}] },
   { name:"ドミー",     job:"重戦士",   attr:"火", rank:"A",  training:"瞬発力",  img:"icons/domi.webp",
@@ -790,10 +790,13 @@ let currentTrainingFilter = "all";
 // ジョブ×属性から取得できる金特を返す
 function getSkillForTarget(c, targetJob, targetAttr) {
   if (!c.morau || c.morau.length === 0) return null;
-  // 1. ジョブ AND 属性が完全一致するスキルを優先
+  // 1. ジョブ AND 属性が完全一致するスキルを優先（必殺技・AS）
   const exact = c.morau.find(s => s.job === targetJob && s.attr === targetAttr);
   if (exact) return { name: exact.name, type: exact.type };
-  // 2. 一致しない場合はサポートスキルのみ表示
+  // 2. 制限なし（job=null）のAS・必殺技（誰でも取得可能なスキル）
+  const free = c.morau.find(s => s.job === null && s.attr === null && (s.type === "AS" || s.type === "必殺技"));
+  if (free) return { name: free.name, type: free.type };
+  // 3. 一致しない場合はサポートスキルを表示
   const support = c.morau.find(s => s.type === "サポート");
   if (support) return { name: support.name, type: support.type };
   return null;
