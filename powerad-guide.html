@@ -795,6 +795,37 @@ let currentFilter = "all";
 let currentTrainingFilter = "all";
 
 // ジョブ×属性から取得できる金特を返す
+// パーティのスキルサマリーをシステムが自動生成
+function buildSkillSummary(members, targetJob, targetAttr) {
+  if (!targetJob || !targetAttr) return '';
+  let hissatsu = null, action = null, supports = [];
+
+  members.forEach(name => {
+    const c = CHARACTERS.find(c => c.name === name);
+    if (!c || !c.morau) return;
+    c.morau.forEach(s => {
+      if (s.type === '必殺技' && s.job === targetJob && s.attr === targetAttr && !hissatsu) {
+        hissatsu = { char: name, skill: s.name };
+      }
+      if (s.type === 'AS' && s.job === targetJob && s.attr === targetAttr && !action) {
+        action = { char: name, skill: s.name };
+      }
+      if (s.type === 'サポート' && s.job === null) {
+        supports.push({ char: name, skill: s.name });
+      }
+    });
+  });
+
+  const lines = [];
+  if (hissatsu) lines.push(`⚔️ 必殺技：${hissatsu.char}→<span style="color:var(--gold)">${hissatsu.skill}</span>`);
+  else lines.push(`⚔️ 必殺技：<span style="color:#f87171;">該当キャラなし（要補強）</span>`);
+  if (action) lines.push(`💥 AS：${action.char}→<span style="color:var(--wind)">${action.skill}</span>`);
+  else lines.push(`💥 AS：<span style="color:#f87171;">該当キャラなし（要補強）</span>`);
+  if (supports.length > 0) lines.push(`🛡️ サポート：${supports.map(s => `${s.char}（${s.skill}）`).join('・')}`);
+
+  return lines.join('<br>');
+}
+
 function getSkillForTarget(c, targetJob, targetAttr) {
   if (!c.morau || c.morau.length === 0) return null;
   // 1. ジョブ AND 属性が完全一致するスキルを優先（必殺技・AS）
@@ -999,6 +1030,9 @@ function showResults(result) {
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">${membersHtml}</div>
         <div class="party-reason">${party.reason}</div>
+        <div style="margin-top:10px;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;font-size:12px;line-height:1.8;">
+          ${buildSkillSummary(party.members, partyJob, partyAttr)}
+        </div>
       </div>
     `;
   }).join("");
