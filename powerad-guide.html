@@ -738,6 +738,24 @@
     <img border="0" width="1" height="1" src="https://www16.a8.net/0.gif?a8mat=4AZS0T+CGWXZM+2SHI+61RI9" alt="">
   </div>
 
+  <!-- フレンド登録 -->
+  <div style="margin-top:32px;">
+    <div class="result-section">
+      <div class="result-section-header">
+        <div class="result-icon" style="background:rgba(91,196,160,0.15);">👫</div>
+        <h3>フレンド登録お願いします！</h3>
+      </div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:14px;">一緒にパワアドを楽しみましょう！フレンドIDをコピーしてゲームから申請してください。</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <span style="font-size:18px;font-weight:700;letter-spacing:2px;color:var(--gold-light);">BEVD-059-959-507</span>
+        <button onclick="copyFriendId()" id="friendCopyBtn"
+          style="padding:8px 16px;background:rgba(212,168,67,0.15);border:1px solid var(--gold-dim);border-radius:6px;color:var(--gold-light);font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;">
+          コピー
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- NotebookLMボックス -->
   <div id="notebookSection" style="display:none;margin-top:32px;">
     <div class="result-section">
@@ -934,6 +952,22 @@ function updateNotebookPrompt() {
 【今後狙いたいおすすめキャラ】
 ・キャラ名（属性／ジョブ）
 狙うべき理由：（なぜこのキャラを引くと手持ちのパーティが強化されるのか、具体的なシナジーを解説してください）`;
+}
+
+function copyFriendId() {
+  navigator.clipboard.writeText('BEVD-059-959-507').then(() => {
+    const btn = document.getElementById('friendCopyBtn');
+    btn.textContent = "✓ コピー済み";
+    btn.style.background = "rgba(91,196,160,0.2)";
+    btn.style.borderColor = "var(--wind)";
+    btn.style.color = "var(--wind)";
+    setTimeout(() => {
+      btn.textContent = "コピー";
+      btn.style.background = "rgba(212,168,67,0.15)";
+      btn.style.borderColor = "var(--gold-dim)";
+      btn.style.color = "var(--gold-light)";
+    }, 2000);
+  });
 }
 
 function copyPrompt() {
