@@ -1143,9 +1143,12 @@ function showResults(result) {
   }).join("");
 
   const priorityColor = { "最優先": "#f0c030", "優先": "#5bc4a0", "推奨": "#8a8676" };
-  document.getElementById("nextList").innerHTML = result.nextToLevel.map((n, i) => `
+  document.getElementById("nextList").innerHTML = result.nextToLevel.map((n, i) => {
+    const c = CHARACTERS.find(c => c.name === n.name);
+    return `
     <div class="next-item">
       <div class="next-order">${i + 1}</div>
+      ${c ? `<div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--border);"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"></div>` : ''}
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
           <div class="next-name">${n.name}</div>
@@ -1153,8 +1156,8 @@ function showResults(result) {
         </div>
         <div class="next-reason">${n.reason}</div>
       </div>
-    </div>
-  `).join("");
+    </div>`;
+  }).join("");
 }
 
 // localStorageから選択状態を復元
