@@ -135,6 +135,20 @@ ${ownedCharacters.join('、')}
     const clean = text.replace(/```json|```/g, '').trim();
     const result = JSON.parse(clean);
 
+    // バリデーション：所持キャラ以外がmembersに含まれていたら除外
+    const ownedSet = new Set(ownedCharacters);
+    if (result.recommendedParties) {
+      result.recommendedParties = result.recommendedParties.map(party => {
+        const invalidMembers = party.members.filter(m => !ownedSet.has(m));
+        if (invalidMembers.length > 0) {
+          console.warn('未所持キャラが含まれていたため除外:', invalidMembers);
+          party.members = party.members.filter(m => ownedSet.has(m));
+          party.reason = `※一部キャラ（${invalidMembers.join('・')}）は未所持のため除外しました。` + party.reason;
+        }
+        return party;
+      });
+    }
+
     return res.status(200).json(result);
   } catch (error) {
     console.error('catch error:', error);
