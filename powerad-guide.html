@@ -657,6 +657,7 @@
       <button class="filter-btn fire" data-attr="火">🔥 火</button>
       <button class="filter-btn water" data-attr="水">💧 水</button>
       <button class="filter-btn wind" data-attr="風">🌿 風</button>
+      <button class="filter-btn" data-attr="無">無</button>
     </div>
     <div class="filter-bar" id="jobFilter">
       <button class="filter-btn active" data-filter="all">ジョブ：全て</button>
@@ -1005,79 +1006,40 @@ function clearSelection() {
   renderGrid();
 }
 
-// フィルター（属性）複数選択対応
+// フィルター共通処理
+function toggleFilter(set, val, allSelector, btnSelector, btn) {
+  if (val === "all") {
+    set.clear();
+    document.querySelectorAll(allSelector).forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  } else {
+    // allボタンのactiveを外す
+    document.querySelectorAll(allSelector + '[data-' + btnSelector + '="all"]').forEach(b => b.classList.remove("active"));
+    if (set.has(val)) {
+      set.delete(val);
+      btn.classList.remove("active");
+    } else {
+      set.add(val);
+      btn.classList.add("active");
+    }
+    // 全解除されたらallをアクティブに
+    if (set.size === 0) {
+      document.querySelectorAll(allSelector + '[data-' + btnSelector + '="all"]').forEach(b => b.classList.add("active"));
+    }
+  }
+  renderGrid();
+}
+
 document.querySelectorAll(".filter-btn[data-attr]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const val = btn.dataset.attr;
-    if (val === "all") {
-      currentAttrFilter.clear();
-      document.querySelectorAll(".filter-btn[data-attr]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    } else {
-      document.querySelectorAll(".filter-btn[data-attr][data-attr='all']").forEach(b => b.classList.remove("active"));
-      if (currentAttrFilter.has(val)) {
-        currentAttrFilter.delete(val);
-        btn.classList.remove("active");
-      } else {
-        currentAttrFilter.add(val);
-        btn.classList.add("active");
-      }
-      if (currentAttrFilter.size === 0) {
-        document.querySelectorAll(".filter-btn[data-attr='all']").forEach(b => b.classList.add("active"));
-      }
-    }
-    renderGrid();
-  });
+  btn.addEventListener("click", () => toggleFilter(currentAttrFilter, btn.dataset.attr, ".filter-btn[data-attr]", "attr", btn));
 });
 
-// フィルター（ジョブ）複数選択対応
 document.querySelectorAll(".filter-btn[data-filter]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const val = btn.dataset.filter;
-    if (val === "all") {
-      currentFilter.clear();
-      document.querySelectorAll(".filter-btn[data-filter]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    } else {
-      document.querySelectorAll(".filter-btn[data-filter='all']").forEach(b => b.classList.remove("active"));
-      if (currentFilter.has(val)) {
-        currentFilter.delete(val);
-        btn.classList.remove("active");
-      } else {
-        currentFilter.add(val);
-        btn.classList.add("active");
-      }
-      if (currentFilter.size === 0) {
-        document.querySelectorAll(".filter-btn[data-filter='all']").forEach(b => b.classList.add("active"));
-      }
-    }
-    renderGrid();
-  });
+  btn.addEventListener("click", () => toggleFilter(currentFilter, btn.dataset.filter, ".filter-btn[data-filter]", "filter", btn));
 });
 
-// フィルター（得意訓練）複数選択対応
 document.querySelectorAll(".filter-btn[data-training]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const val = btn.dataset.training;
-    if (val === "all") {
-      currentTrainingFilter.clear();
-      document.querySelectorAll(".filter-btn[data-training]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    } else {
-      document.querySelectorAll(".filter-btn[data-training='all']").forEach(b => b.classList.remove("active"));
-      if (currentTrainingFilter.has(val)) {
-        currentTrainingFilter.delete(val);
-        btn.classList.remove("active");
-      } else {
-        currentTrainingFilter.add(val);
-        btn.classList.add("active");
-      }
-      if (currentTrainingFilter.size === 0) {
-        document.querySelectorAll(".filter-btn[data-training='all']").forEach(b => b.classList.add("active"));
-      }
-    }
-    renderGrid();
-  });
+  btn.addEventListener("click", () => toggleFilter(currentTrainingFilter, btn.dataset.training, ".filter-btn[data-training]", "training", btn));
 });
 
 // モード切替
