@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>パワアド パーティ診断</title>
+<title>【パワアド】AIデッキ診断 | 手持ちキャラから最強デッキを自動提案</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0e14;
-    --surface: #16161f;
-    --surface2: #1e1e2c;
-    --border: #2e2e45;
-    --gold: #d4a843;
-    --gold-light: #f0c96a;
-    --gold-dim: #8a6a20;
-    --text: #e8e4d8;
-    --text-dim: #8a8676;
+    --bg: #f5f5f7;
+    --surface: #ffffff;
+    --surface2: #f0f0f5;
+    --border: #e0e0e8;
+    --gold: #cc2222;
+    --gold-light: #ee3333;
+    --gold-dim: #aa1111;
+    --text: #1a1a2e;
+    --text-dim: #666680;
     --red: #c94040;
     --blue: #4a90c4;
     --green: #5ba85a;
@@ -136,7 +136,7 @@
   .filter-btn:hover, .filter-btn.active {
     border-color: var(--gold-dim);
     color: var(--gold-light);
-    background: rgba(212,168,67,0.08);
+    background: rgba(204,34,34,0.08);
   }
 
   .filter-btn.fire.active { border-color: var(--fire); color: var(--fire); background: rgba(196,96,48,0.1); }
@@ -417,7 +417,7 @@
     padding: 12px;
     background: var(--surface2);
     border-radius: 8px;
-    border-left: 3px solid var(--gold-dim);
+    border-left: 3px solid var(--gold);
   }
 
   /* ほしいキャラ */
@@ -598,6 +598,12 @@
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5843536105440700"
      crossorigin="anonymous"></script>
+  <meta name="description" content="パワプロアドベンチャーズ（パワアド）の手持ちキャラを選ぶだけでAIが最強デッキを自動診断。剣士・弓使い・魔法使い・魔闘士のジョブ×属性別おすすめ編成、欲しいキャラ、育てるべきキャラを提案。逆算診断機能でジョブ×属性から最適デッキを探せる。">
+  <meta name="keywords" content="パワアド,パワプロアドベンチャーズ,最強デッキ,パーティ編成,デッキ診断,おすすめキャラ,攻略">
+  <meta property="og:title" content="【パワアド】AIデッキ診断 | 手持ちキャラから最強デッキを自動提案">
+  <meta property="og:description" content="手持ちキャラを選ぶだけでAIが最強デッキを自動診断。ジョブ×属性別の逆算診断機能も搭載。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://powerad-guide.com">
 </head>
 <body>
   <!-- a8.net広告（上部） -->
@@ -611,8 +617,8 @@
 
   <header>
     <div class="logo-sub">Power Adventures</div>
-    <h1>パーティ診断</h1>
-    <p>持っているキャラを選ぶだけで、最適なパーティを提案します</p>
+    <h1>最強デッキ診断</h1>
+    <p>持っているキャラを選ぶだけで、最適なデッキを提案します</p>
   </header>
 
   <!-- キャラ選択 -->
@@ -646,11 +652,14 @@
 
     <div class="section-title"><h2>Step 1 — 持っているキャラを選択</h2></div>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">すべて</button>
-      <button class="filter-btn fire" data-filter="火">🔥 火</button>
-      <button class="filter-btn water" data-filter="水">💧 水</button>
-      <button class="filter-btn wind" data-filter="風">🌿 風</button>
+    <div class="filter-bar" id="attrFilter">
+      <button class="filter-btn active" data-attr="all">属性：全て</button>
+      <button class="filter-btn fire" data-attr="火">🔥 火</button>
+      <button class="filter-btn water" data-attr="水">💧 水</button>
+      <button class="filter-btn wind" data-attr="風">🌿 風</button>
+    </div>
+    <div class="filter-bar" id="jobFilter">
+      <button class="filter-btn active" data-filter="all">ジョブ：全て</button>
       <button class="filter-btn" data-filter="剣士">剣士</button>
       <button class="filter-btn" data-filter="弓使い">弓使い</button>
       <button class="filter-btn" data-filter="魔法使い">魔法使い</button>
@@ -677,7 +686,7 @@
     </div>
 
     <button class="diagnose-btn" id="diagnoseBtn" disabled onclick="diagnose()">
-      ⚔️ パーティを診断する
+      ⚔️ デッキを診断する
     </button>
 
     <!-- a8.net広告 -->
@@ -704,7 +713,7 @@
     <div class="result-section">
       <div class="result-section-header">
         <div class="result-icon icon-party">⚔️</div>
-        <h3>おすすめパーティ編成</h3>
+        <h3>おすすめデッキ編成</h3>
       </div>
       <div class="party-grid" id="partyGrid"></div>
       <div class="party-reason" id="partyReason"></div>
@@ -749,7 +758,7 @@
       <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
         <span style="font-size:18px;font-weight:700;letter-spacing:2px;color:var(--gold-light);">BEVD-059-959-507</span>
         <button onclick="copyFriendId()" id="friendCopyBtn"
-          style="padding:8px 16px;background:rgba(212,168,67,0.15);border:1px solid var(--gold-dim);border-radius:6px;color:var(--gold-light);font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;">
+          style="padding:8px 16px;background:rgba(204,34,34,0.1);border:1px solid var(--gold-dim);border-radius:6px;color:var(--gold-light);font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;">
           コピー
         </button>
       </div>
@@ -767,7 +776,7 @@
       <textarea id="notebookPrompt" readonly
         style="width:100%;min-height:140px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-size:13px;font-family:'Noto Sans JP',sans-serif;line-height:1.7;resize:none;box-sizing:border-box;margin-bottom:10px;"></textarea>
       <button onclick="copyPrompt()" id="copyBtn"
-        style="width:100%;padding:12px;background:rgba(212,168,67,0.15);border:1px solid var(--gold-dim);border-radius:8px;color:var(--gold-light);font-size:14px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;letter-spacing:1px;">
+        style="width:100%;padding:12px;background:rgba(204,34,34,0.1);border:1px solid var(--gold-dim);border-radius:8px;color:var(--gold-light);font-size:14px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;font-weight:700;letter-spacing:1px;">
         📋 上の文章をコピーする
       </button>
       <a href="https://notebooklm.google.com/notebook/2a0bf243-0908-4acc-a49a-9ed7ebd466a0" target="_blank" rel="noopener"
@@ -810,31 +819,32 @@ const CHARACTERS = [
     morau:[{name:"テンペストスイープ",type:"必殺技",job:"剣士",attr:"風"},{name:"烈風震破",type:"AS",job:"重戦士",attr:"風"},{name:"必殺の書",type:"サポート",job:null,attr:null}] },
   { name:"ドミー",     job:"重戦士",   attr:"火", rank:"A",  training:"瞬発力",  img:"icons/domi.webp",
     morau:[{name:"ルミナスオーラ",type:"必殺技",job:"重戦士",attr:"火"},{name:"炎魔連撃",type:"AS",job:"魔闘士",attr:"火"},{name:"妖狐キラー",type:"サポート",job:null,attr:null}] },
-  { name:"マンダイン", job:"魔闘士",   attr:"火", rank:"B",  training:"命中",    img:"icons/mandain.webp",
-    morau:[{name:"炎熱フィスト",type:"必殺技",job:"魔闘士",attr:"火"},{name:"火連斬",type:"AS",job:"剣士",attr:"火"},{name:"ヌメリンキラー",type:"サポート",job:null,attr:null}] },
-  { name:"バトラニー", job:"弓使い",   attr:"火", rank:"S",  training:"持久力",  img:"icons/batorani.webp",
-    morau:[{name:"レインバーン",type:"必殺技",job:"弓使い",attr:"火"},{name:"ホーリーライト",type:"AS",job:"僧侶",attr:"火"},{name:"烈",type:"サポート",job:null,attr:null}] },
   { name:"ハンシス",   job:"弓使い",   attr:"水", rank:"S",  training:"瞬発力",  img:"icons/hansis.webp",
     morau:[{name:"夢幻の水矢",type:"必殺技",job:"弓使い",attr:"水"},{name:"ヒールシャワー",type:"AS",job:"僧侶",attr:"水"},{name:"タフネス",type:"サポート",job:null,attr:null}] },
+  { name:"バトラニー", job:"弓使い",   attr:"火", rank:"S",  training:"持久力",  img:"icons/batorani.webp",
+    morau:[{name:"レインバーン",type:"必殺技",job:"弓使い",attr:"火"},{name:"ホーリーライト",type:"AS",job:"僧侶",attr:"火"},{name:"烈",type:"サポート",job:null,attr:null}] },
   { name:"ホロウ",     job:"僧侶",     attr:"水", rank:"S",  training:"命中",    img:"icons/horou.webp",
     morau:[{name:"生命の雫",type:"必殺技",job:"僧侶",attr:"水"},{name:"守護水斬",type:"AS",job:"剣士",attr:"水"},{name:"トリックスター",type:"サポート",job:null,attr:null}] },
   { name:"マモル",     job:"剣士",     attr:"火", rank:"S",  training:"持久力",  img:"icons/mamoru.webp",
     morau:[{name:"ライジングストライク",type:"必殺技",job:"剣士",attr:"火"},{name:"ソーサリーエリア",type:"AS",job:"魔法使い",attr:"火"},{name:"加護",type:"サポート",job:null,attr:null}] },
-  { name:"リート",     job:"剣士",     attr:"風", rank:"A",  training:"筋力",    img:"icons/riito.webp",
-    morau:[{name:"剛力",type:"サポート",job:null,attr:null}] },
+  { name:"マリセア",   job:"彼女候補", attr:"無", rank:"SS", training:"彼女候補",img:"icons/marisea.webp",
+    morau:[{name:"慈愛の祈り",type:"サポート",job:null,attr:null}] },
+  { name:"マンダイン", job:"魔闘士",   attr:"火", rank:"B",  training:"命中",    img:"icons/mandain.webp",
+    morau:[{name:"炎熱フィスト",type:"必殺技",job:"魔闘士",attr:"火"},{name:"火連斬",type:"AS",job:"剣士",attr:"火"},{name:"ヌメリンキラー",type:"サポート",job:null,attr:null}] },
   { name:"ミヤビ",     job:"弓使い",   attr:"風", rank:"S",  training:"瞬発力",  img:"icons/miyabi.webp",
     morau:[{name:"ゲイルシュート",type:"必殺技",job:"弓使い",attr:"風"},{name:"ペネトレイトブロー",type:"AS",job:"魔闘士",attr:"風"},{name:"平常心",type:"サポート",job:null,attr:null}] },
   { name:"ヤンスロット",job:"弓使い",  attr:"風", rank:"S",  training:"命中",    img:"icons/yanslot.webp",
     morau:[{name:"エースアタッカー",type:"サポート",job:null,attr:null}] },
   { name:"ライズ",     job:"重戦士",   attr:"水", rank:"A",  training:"筋力",    img:"icons/raizu.webp",
     morau:[{name:"守りの鼓舞",type:"必殺技",job:"重戦士",attr:"水"},{name:"カウンタースタンス",type:"AS",job:"弓使い",attr:"水"},{name:"サイクロプスキラー",type:"サポート",job:null,attr:null}] },
-  { name:"マリセア",   job:"彼女候補", attr:"無", rank:"SS", training:"彼女候補",img:"icons/marisea.webp",
-    morau:[{name:"慈愛の祈り",type:"サポート",job:null,attr:null}] },
+  { name:"リート",     job:"剣士",     attr:"風", rank:"A",  training:"筋力",    img:"icons/riito.webp",
+    morau:[{name:"剛力",type:"サポート",job:null,attr:null}] }
 ];
 
 const selected = new Set();
-let currentFilter = "all";
-let currentTrainingFilter = "all";
+let currentFilter = new Set();
+let currentAttrFilter = new Set();
+let currentTrainingFilter = new Set();
 
 // ジョブ×属性から取得できる金特を返す
 // パーティのスキルサマリーをシステムが自動生成
@@ -885,9 +895,10 @@ function getSkillForTarget(c, targetJob, targetAttr) {
 function renderGrid() {
   const grid = document.getElementById("charGrid");
   const filtered = CHARACTERS.filter(c => {
-    const jobAttrMatch = currentFilter === "all" || c.attr === currentFilter || c.job === currentFilter;
-    const trainingMatch = currentTrainingFilter === "all" || c.training === currentTrainingFilter;
-    return jobAttrMatch && trainingMatch;
+    const jobMatch = currentFilter.size === 0 || currentFilter.has(c.job);
+    const attrMatch = currentAttrFilter.size === 0 || currentAttrFilter.has(c.attr);
+    const trainingMatch = currentTrainingFilter.size === 0 || currentTrainingFilter.has(c.training);
+    return jobMatch && attrMatch && trainingMatch;
   });
 
   grid.innerHTML = filtered.map(c => `
@@ -994,22 +1005,77 @@ function clearSelection() {
   renderGrid();
 }
 
-// フィルター（ジョブ・属性）
-document.querySelectorAll(".filter-btn[data-filter]").forEach(btn => {
+// フィルター（属性）複数選択対応
+document.querySelectorAll(".filter-btn[data-attr]").forEach(btn => {
   btn.addEventListener("click", () => {
-    btn.closest(".filter-bar").querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.dataset.filter;
+    const val = btn.dataset.attr;
+    if (val === "all") {
+      currentAttrFilter.clear();
+      document.querySelectorAll(".filter-btn[data-attr]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    } else {
+      document.querySelectorAll(".filter-btn[data-attr][data-attr='all']").forEach(b => b.classList.remove("active"));
+      if (currentAttrFilter.has(val)) {
+        currentAttrFilter.delete(val);
+        btn.classList.remove("active");
+      } else {
+        currentAttrFilter.add(val);
+        btn.classList.add("active");
+      }
+      if (currentAttrFilter.size === 0) {
+        document.querySelectorAll(".filter-btn[data-attr='all']").forEach(b => b.classList.add("active"));
+      }
+    }
     renderGrid();
   });
 });
 
-// フィルター（得意訓練）
+// フィルター（ジョブ）複数選択対応
+document.querySelectorAll(".filter-btn[data-filter]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const val = btn.dataset.filter;
+    if (val === "all") {
+      currentFilter.clear();
+      document.querySelectorAll(".filter-btn[data-filter]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    } else {
+      document.querySelectorAll(".filter-btn[data-filter='all']").forEach(b => b.classList.remove("active"));
+      if (currentFilter.has(val)) {
+        currentFilter.delete(val);
+        btn.classList.remove("active");
+      } else {
+        currentFilter.add(val);
+        btn.classList.add("active");
+      }
+      if (currentFilter.size === 0) {
+        document.querySelectorAll(".filter-btn[data-filter='all']").forEach(b => b.classList.add("active"));
+      }
+    }
+    renderGrid();
+  });
+});
+
+// フィルター（得意訓練）複数選択対応
 document.querySelectorAll(".filter-btn[data-training]").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn[data-training]").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentTrainingFilter = btn.dataset.training;
+    const val = btn.dataset.training;
+    if (val === "all") {
+      currentTrainingFilter.clear();
+      document.querySelectorAll(".filter-btn[data-training]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    } else {
+      document.querySelectorAll(".filter-btn[data-training='all']").forEach(b => b.classList.remove("active"));
+      if (currentTrainingFilter.has(val)) {
+        currentTrainingFilter.delete(val);
+        btn.classList.remove("active");
+      } else {
+        currentTrainingFilter.add(val);
+        btn.classList.add("active");
+      }
+      if (currentTrainingFilter.size === 0) {
+        document.querySelectorAll(".filter-btn[data-training='all']").forEach(b => b.classList.add("active"));
+      }
+    }
     renderGrid();
   });
 });
