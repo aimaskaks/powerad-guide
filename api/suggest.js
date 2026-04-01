@@ -14,7 +14,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'キャラクターを選択してください' });
   }
 
-  const isTargetMode = !!(targetJob && targetAttr);
+  const isTargetMode = !!(targetJob || targetAttr);
 
   const prompt = isTargetMode ? `
 あなたはパワプロアドベンチャーズ（パワアド）の最高の攻略アドバイザーです。
@@ -38,10 +38,10 @@ ${ownedCharacters.join('、')}
 {
   "recommendedParties": [
     {
-      "title": "【${targetJob}×${targetAttr}属性】",
+      "title": "${targetJob && targetAttr ? `【${targetJob}×${targetAttr}属性】` : targetJob ? `【${targetJob}×属性指定なし】` : `【ジョブ指定なし×${targetAttr}属性】`}",
       "members": ["キャラ名1", "キャラ名2", "キャラ名3", "キャラ名4", "キャラ名5", "キャラ名6"],
       "trainingCombo": "得意訓練の組み合わせ説明",
-      "reason": "【${targetJob}×${targetAttr}属性】育成に向けた得意訓練のシナジーとスペシャルタッグ効率を中心に150字程度で説明。スキル名は一切記載しないこと。理想のキャラが所持できていない場合は『本来は〇〇が理想だが、所持キャラの〇〇で代用』のように代用情報も記載すること"
+      "reason": "${targetJob || 'ジョブ指定なし'}×${targetAttr || '属性指定なし'}の育成に向けた得意訓練のシナジーとスペシャルタッグ効率を中心に150字程度で説明。スキル名は一切記載しないこと。理想のキャラが所持できていない場合は『本来は〇〇が理想だが、所持キャラの〇〇で代用』のように代用情報も記載すること"
     }
   ],
   "wantedCharacters": [
@@ -55,7 +55,7 @@ ${ownedCharacters.join('、')}
 厳守事項：
 - titleは必ず「【${targetJob}×${targetAttr}属性】」で固定
 - membersには必ず「ユーザーの所持キャラ」に記載されたキャラのみを使用すること。所持していないキャラを編成に入れることは絶対禁止
-- 所持キャラの中から【${targetJob}×${targetAttr}属性】の冒険者育成に最も適したパーティを1つ提案
+- 所持キャラの中から${targetJob ? `【${targetJob}】` : '指定なし（どのジョブでもOK）'}×${targetAttr ? `【${targetAttr}属性】` : '指定なし（どの属性でもOK）'}の冒険者育成に最も適したパーティを1つ提案
 - マリセアを所持していれば必ず含める
 - メンバーは必ず6人（マリセア含む）
 - ${targetJob}の育成に必要な得意訓練を優先して固める（3人固め or 2:2）

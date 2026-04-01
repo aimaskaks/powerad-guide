@@ -642,6 +642,7 @@
       <div class="select-group">
         <span class="select-label">ROLE</span>
         <select class="styled-select" id="targetJob">
+          <option value="">指定なし</option>
           <option value="剣士">⚔️ 剣士</option>
           <option value="弓使い">🏹 弓使い</option>
           <option value="魔法使い">🔮 魔法使い</option>
@@ -651,6 +652,7 @@
       <div class="select-group">
         <span class="select-label">ELEMENT</span>
         <select class="styled-select" id="targetAttr">
+          <option value="">指定なし</option>
           <option value="火">🔥 火属性</option>
           <option value="水">💧 水属性</option>
           <option value="風">🌿 風属性</option>
@@ -1074,8 +1076,10 @@ async function diagnose() {
 
   const body = { ownedCharacters: [...selected] };
   if (currentMode === 'target') {
-    body.targetJob = document.getElementById('targetJob').value;
-    body.targetAttr = document.getElementById('targetAttr').value;
+    const tj = document.getElementById('targetJob').value;
+    const ta = document.getElementById('targetAttr').value;
+    if (tj) body.targetJob = tj;
+    if (ta) body.targetAttr = ta;
   }
 
   try {
