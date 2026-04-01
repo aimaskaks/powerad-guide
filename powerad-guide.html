@@ -1240,5 +1240,47 @@ renderGrid();
       navigator.serviceWorker.register('/sw.js');
     }
   </script>
+
+  <!-- PWAインストール誘導ポップアップ -->
+  <div id="pwaPrompt" style="
+    display:none;
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    width:calc(100% - 40px);
+    max-width:400px;
+    background:#1e1e2c;
+    border:1px solid #2e2e45;
+    border-radius:16px;
+    padding:16px 18px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  ">
+    <img src="/icons/icon-192.png" style="width:48px;height:48px;border-radius:12px;flex-shrink:0;">
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;color:#f0c96a;margin-bottom:4px;">ホーム画面に追加</div>
+      <div style="font-size:11px;color:#8a8676;line-height:1.5;">
+        下の <span style="color:#e8e4d8;">共有ボタン</span> →「ホーム画面に追加」でアプリとして使えます
+      </div>
+    </div>
+    <button onclick="document.getElementById('pwaPrompt').style.display='none';localStorage.setItem('pwaPromptDismissed','1');"
+      style="background:none;border:none;color:#8a8676;font-size:20px;cursor:pointer;padding:4px;flex-shrink:0;">✕</button>
+  </div>
+
+  <script>
+    // iPhoneのSafariでスタンドアロンでない場合のみ表示
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone;
+    const dismissed = localStorage.getItem('pwaPromptDismissed');
+    if (isIOS && !isStandalone && !dismissed) {
+      setTimeout(() => {
+        document.getElementById('pwaPrompt').style.display = 'flex';
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
