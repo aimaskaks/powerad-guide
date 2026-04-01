@@ -865,6 +865,14 @@ let currentFilter = new Set();
 let currentAttrFilter = new Set();
 let currentTrainingFilter = new Set();
 
+// ジョブ別推奨得意訓練
+const JOB_TRAINING = {
+  "剣士":   ["筋力", "持久力", "命中"],
+  "弓使い": ["命中", "瞬発力", "筋力"],
+  "魔法使い": ["知能", "瞬発力", "メンタル"],
+  "魔闘士": ["知能", "メンタル", "持久力"],
+};
+
 // ジョブ×属性から取得できる金特を返す
 // パーティのスキルサマリーをシステムが自動生成
 function buildSkillSummary(members, targetJob, targetAttr) {
@@ -1114,7 +1122,25 @@ function showResults(result) {
     const partyAttr = titleMatch ? titleMatch[2] : (document.getElementById('targetAttr') ? document.getElementById('targetAttr').value : null);
     const skillTypeColor = { "必殺技": "var(--gold)", "AS": "var(--wind)", "サポート": "var(--text-dim)" };
 
-    const membersHtml = party.members.map(name => {
+    // 6枠に足りない分を空き枠で補完
+    const filledMembers = [...party.members];
+    const trainings = JOB_TRAINING[partyJob] || ["持久力", "筋力", "命中"];
+    let tIdx = 0;
+    while (filledMembers.length < 6) {
+      filledMembers.push({ empty: true, training: trainings[tIdx % trainings.length] });
+      tIdx++;
+    }
+
+    const membersHtml = filledMembers.map(member => {
+      if (member.empty) {
+        return `
+        <div class="party-member" style="border:2px solid #e74c3c;background:rgba(231,76,60,0.07);">
+          <div class="party-member-icon" style="border:2px dashed #e74c3c;background:rgba(231,76,60,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;">？</div>
+          <div class="party-member-name" style="color:#e74c3c;font-size:11px;">未所持</div>
+          <div class="party-member-training" style="background:rgba(231,76,60,0.15);color:#e74c3c;">得意：${member.training}</div>
+        </div>`;
+      }
+      const name = member;
       const c = CHARACTERS.find(c => c.name === name);
       const skill = (partyJob && partyAttr && c)
         ? getSkillForTarget(c, partyJob, partyAttr)
